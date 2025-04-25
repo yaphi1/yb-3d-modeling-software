@@ -1,11 +1,11 @@
 import icon from '../../assets/icon.svg';
 import './App.css';
+import { MainView } from './components/MainView';
 
 export default function App() {
   return (
-    <div className="Hello">
-      <div>Hi</div>
-      <img width="200" alt="icon" src={icon} />
+    <div className="App">
+      <MainView />
     </div>
   );
 }

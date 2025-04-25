@@ -4,9 +4,10 @@
 */
 
 body {
-  background-color: black;
+  background-color: #3f3f3f;
+  margin: 0px;
 }
 
-.Hello {
-  color: red;
+.App {
+  height: 100vh;
 }
