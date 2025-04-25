@@ -1,11 +1,7 @@
 # TODO
 
-- create editor state provider
-- select/deselect shape
 - move shape
 - create/delete shapes
-
-
-state:
-
-EditorContext
+- undo/redo
+- prevent camera pan from deselecting
+- view modes (wireframe, solid, textures)

@@ -1,22 +1,16 @@
 import * as THREE from 'three';
-import { ThreeElements } from '@react-three/fiber';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
+import { CustomMeshProps } from './shapeTypes';
 
-export function Sphere(props: ThreeElements['mesh']) {
+export function Sphere(props: CustomMeshProps) {
   const meshRef = useRef<THREE.Mesh>(null);
-  const [hovered, setHover] = useState(false);
-  const [active, setActive] = useState(false);
 
   return (
-    <mesh
-      {...props}
-      ref={meshRef}
-      onClick={() => setActive(!active)}
-      onPointerOver={() => setHover(true)}
-      onPointerOut={() => setHover(false)}
-    >
+    <mesh {...props} ref={meshRef}>
       <sphereGeometry args={[0.5, 32, 32]} />
-      <meshStandardMaterial color={hovered ? 'hotpink' : '#848586'} />
+      <meshStandardMaterial
+        color={props.isActive ? '#0098db' : props.isHovered ? 'hotpink' : '#848586'}
+      />
     </mesh>
   );
 }

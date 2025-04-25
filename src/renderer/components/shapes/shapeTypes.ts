@@ -1,3 +1,5 @@
+import { ThreeElements } from '@react-three/fiber';
+
 export const SHAPE_TYPES = {
   CUBE: 'CUBE',
   SPHERE: 'SPHERE',
@@ -21,3 +23,8 @@ export type BaseShapeProps = {
 export type SphereProps = BaseShapeProps & {};
 
 export type AllShapeProps = BaseShapeProps | SphereProps;
+
+export type CustomMeshProps = ThreeElements['mesh'] & {
+  isHovered: boolean;
+  isActive: boolean;
+};
