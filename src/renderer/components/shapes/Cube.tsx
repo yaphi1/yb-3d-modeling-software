@@ -1,22 +1,31 @@
 import * as THREE from 'three';
 import { ThreeElements } from '@react-three/fiber';
-import { useRef, useState } from 'react';
+import { useContext, useRef, useState } from 'react';
+import { EditorStateContext } from '../../useEditorContext';
+import { useSelectionHelpers } from '../../useSelectionHelpers';
 
 export function Cube(props: ThreeElements['mesh']) {
   const meshRef = useRef<THREE.Mesh>(null);
-  const [hovered, setHover] = useState(false);
-  const [active, setActive] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const { editorState } = useContext(EditorStateContext);
+  const { selectShapeById } = useSelectionHelpers();
+
+  const isActive = editorState.selectedObjectId === props.uuid;
 
   return (
     <mesh
       {...props}
       ref={meshRef}
-      // scale={active ? 1.5 : 1}
-      onClick={(event) => setActive(!active)}
-      onPointerOver={(event) => setHover(true)}
-      onPointerOut={(event) => setHover(false)}>
+      onClick={() => {
+        selectShapeById(props.uuid ?? null);
+      }}
+      onPointerOver={() => setIsHovered(true)}
+      onPointerOut={() => setIsHovered(false)}
+    >
       <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color={hovered ? 'hotpink' : '#848586'} />
+      <meshStandardMaterial
+        color={isActive ? '#0098db' : isHovered ? 'hotpink' : '#848586'}
+      />
     </mesh>
-  )
+  );
 }

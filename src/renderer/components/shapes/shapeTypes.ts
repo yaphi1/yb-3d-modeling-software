@@ -6,19 +6,18 @@ export const SHAPE_TYPES = {
 export type SHAPE_NAMES = keyof typeof SHAPE_TYPES;
 
 export type XYZ = {
-  x: number,
-  y: number,
-  z: number,
+  x: number;
+  y: number;
+  z: number;
 };
 
 export type BaseShapeProps = {
-  id: string,
-  shapeName: SHAPE_NAMES,
-  position: XYZ,
-  scale: XYZ,
+  id: string;
+  shapeName: SHAPE_NAMES;
+  position: XYZ;
+  scale: XYZ;
 };
 
-export type SphereProps = BaseShapeProps & {
-};
+export type SphereProps = BaseShapeProps & {};
 
 export type AllShapeProps = BaseShapeProps | SphereProps;

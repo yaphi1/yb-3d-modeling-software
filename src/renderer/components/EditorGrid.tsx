@@ -5,7 +5,7 @@ export function EditorGrid() {
   return (
     <>
       <Grid
-        infiniteGrid={true}
+        infiniteGrid
         cellSize={0.5}
         cellThickness={1}
         cellColor="#777"
@@ -16,11 +16,17 @@ export function EditorGrid() {
         side={THREE.DoubleSide}
       />
       <Line
-        points={[[-40, 0, 0], [40, 0, 0]]}
+        points={[
+          [-40, 0, 0],
+          [40, 0, 0],
+        ]}
         color="#814149"
       />
       <Line
-        points={[[0, 0, -40], [0, 0, 40]]}
+        points={[
+          [0, 0, -40],
+          [0, 0, 40],
+        ]}
         color="#678239"
       />
     </>

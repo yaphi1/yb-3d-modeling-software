@@ -3,10 +3,13 @@ import { OrbitControls } from '@react-three/drei';
 import { EditorGrid } from './EditorGrid';
 import { Lighting } from './Lighting';
 import { SceneObjects } from './SceneObjects';
+import { useSelectionHelpers } from '../useSelectionHelpers';
 
 export function MainView() {
+  const { deselectAll } = useSelectionHelpers();
+
   return (
-    <Canvas>
+    <Canvas onClick={deselectAll}>
       <Lighting />
       <SceneObjects />
       <EditorGrid />

@@ -11,11 +11,12 @@ export function Sphere(props: ThreeElements['mesh']) {
     <mesh
       {...props}
       ref={meshRef}
-      onClick={(event) => setActive(!active)}
-      onPointerOver={(event) => setHover(true)}
-      onPointerOut={(event) => setHover(false)}>
+      onClick={() => setActive(!active)}
+      onPointerOver={() => setHover(true)}
+      onPointerOut={() => setHover(false)}
+    >
       <sphereGeometry args={[0.5, 32, 32]} />
       <meshStandardMaterial color={hovered ? 'hotpink' : '#848586'} />
     </mesh>
-  )
+  );
 }

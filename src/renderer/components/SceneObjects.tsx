@@ -1,7 +1,7 @@
 import { useState } from 'react';
+import { v4 as generateUUID } from 'uuid';
 import { AllShapeProps, SHAPE_TYPES } from './shapes/shapeTypes';
 import { Shape } from './shapes/Shape';
-import { v4 as generateUUID } from 'uuid';
 
 const defaultShapes: Array<AllShapeProps> = [
   {
@@ -16,7 +16,7 @@ export function SceneObjects() {
   const [shapes, setShapes] = useState(defaultShapes);
   return (
     <>
-      {shapes.map(shape => (
+      {shapes.map((shape) => (
         <Shape key={shape.id} shapeProps={shape} />
       ))}
     </>
