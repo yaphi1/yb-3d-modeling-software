@@ -12,6 +12,7 @@ export type XYZ = {
 };
 
 export type BaseShapeProps = {
+  id: string,
   shapeName: SHAPE_NAMES,
   position: XYZ,
   scale: XYZ,
