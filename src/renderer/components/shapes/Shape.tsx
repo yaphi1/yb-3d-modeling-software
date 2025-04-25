@@ -1,9 +1,11 @@
-import { JSX, useContext, useState } from 'react';
+import { JSX, useContext, useEffect, useMemo, useState } from 'react';
 import { Cube } from './Cube';
 import { AllShapeProps, SHAPE_NAMES, SHAPE_TYPES, XYZ } from './shapeTypes';
 import { Sphere } from './Sphere';
 import { useSelectionHelpers } from '../../useSelectionHelpers';
-import { EditorStateContext } from '../../useEditorContext';
+import { EDITING_STATES, EditorStateContext } from '../../useEditorContext';
+import { useEditorControls } from '../controls/useEditorControls';
+import { produce } from 'immer';
 
 function xyzToArray(xyz: XYZ): [number, number, number] {
   return [xyz.x, xyz.y, xyz.z];
@@ -12,9 +14,34 @@ function xyzToArray(xyz: XYZ): [number, number, number] {
 export function Shape({ shapeProps }: { shapeProps: AllShapeProps }) {
   const [isHovered, setIsHovered] = useState(false);
   const { selectShapeById } = useSelectionHelpers();
-  const { editorState } = useContext(EditorStateContext);
+  const { editorState, setEditorState } = useContext(EditorStateContext);
+  const { isPressedG, isPressedEsc } = useEditorControls();
 
-  const isActive = editorState.selectedObjectId === shapeProps.id;
+  const isActive = useMemo(() => {
+    return editorState.selectedObjectId === shapeProps.id;
+  }, [editorState.selectedObjectId, shapeProps.id]);
+
+  useEffect(() => {
+    if (isActive && isPressedG) {
+      setEditorState(
+        produce((draft) => {
+          draft.editingState = EDITING_STATES.MOVE;
+          console.log('move');
+        }),
+      );
+    }
+  }, [isActive, isPressedG]);
+
+  useEffect(() => {
+    if (isPressedEsc) {
+      setEditorState(
+        produce((draft) => {
+          draft.editingState = EDITING_STATES.DEFAULT;
+          console.log('default');
+        }),
+      );
+    }
+  }, [isPressedEsc]);
 
   const commonProps = {
     position: xyzToArray(shapeProps.position),

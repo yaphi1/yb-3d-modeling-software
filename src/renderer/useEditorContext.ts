@@ -1,5 +1,13 @@
 import { createContext, Dispatch, SetStateAction, useState } from 'react';
 
+export const EDITING_STATES = {
+  DEFAULT: 'DEFAULT',
+  MOVE: 'MOVE',
+  SCALE: 'SCALE',
+} as const;
+
+type EditingStatesType = keyof typeof EDITING_STATES;
+
 type EditorState = {
   selectedObjectId: string | null;
   /**
@@ -8,11 +16,13 @@ type EditorState = {
    * That's why we need to handle propagation manually.
    */
   shouldStopPropagation: boolean;
+  editingState: EditingStatesType;
 };
 
 const defaultEditorState: EditorState = {
   selectedObjectId: null,
   shouldStopPropagation: false,
+  editingState: EDITING_STATES.DEFAULT,
 };
 
 export const EditorStateContext = createContext<{

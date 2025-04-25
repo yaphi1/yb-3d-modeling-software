@@ -1,6 +1,6 @@
 import { useCallback, useContext } from 'react';
 import { produce } from 'immer';
-import { EditorStateContext } from './useEditorContext';
+import { EDITING_STATES, EditorStateContext } from './useEditorContext';
 
 export function useSelectionHelpers() {
   const { editorState, setEditorState } = useContext(EditorStateContext);
@@ -25,6 +25,7 @@ export function useSelectionHelpers() {
       setEditorState(
         produce((draft) => {
           draft.selectedObjectId = null;
+          draft.editingState = EDITING_STATES.DEFAULT;
         }),
       );
     }

@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import './App.css';
 import { MainView } from './components/MainView';
 import { EditorStateContext, useEditorContext } from './useEditorContext';
+import { EditorControls } from './components/controls/EditorControls';
 
 export default function App() {
   const { editorState, setEditorState } = useEditorContext();
@@ -12,9 +13,11 @@ export default function App() {
 
   return (
     <EditorStateContext.Provider value={editorStateContext}>
-      <div className="App">
-        <MainView />
-      </div>
+      <EditorControls>
+        <div className="App">
+          <MainView />
+        </div>
+      </EditorControls>
     </EditorStateContext.Provider>
   );
 }
