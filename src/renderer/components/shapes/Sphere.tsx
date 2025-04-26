@@ -9,7 +9,9 @@ export function Sphere(props: CustomMeshProps) {
     <mesh {...props} ref={meshRef}>
       <sphereGeometry args={[0.5, 32, 32]} />
       <meshStandardMaterial
-        color={props.isActive ? '#0098db' : props.isHovered ? 'hotpink' : '#848586'}
+        color={
+          props.isActive ? '#0098db' : props.isHovered ? 'hotpink' : '#848586'
+        }
       />
     </mesh>
   );

@@ -13,6 +13,11 @@ export type XYZ = {
   z: number;
 };
 
+export type XY = {
+  x: number;
+  y: number;
+};
+
 export type BaseShapeProps = {
   id: string;
   sceneObjectName: SHAPE_NAMES;

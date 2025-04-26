@@ -1,4 +1,11 @@
-import { createContext, Dispatch, SetStateAction } from 'react';
+import {
+  createContext,
+  createRef,
+  Dispatch,
+  RefObject,
+  SetStateAction,
+} from 'react';
+import { XY, XYZ } from '../shapes/shapeTypes';
 
 export const EDITING_STATES = {
   DEFAULT: 'DEFAULT',
@@ -19,16 +26,30 @@ export type EditorState = {
   editingState: EditingStatesType;
 };
 
+export type EditorRefs = {
+  objectPositionSnapshot: RefObject<XYZ | null>;
+  mousePositionSnapshot: RefObject<XY | null>;
+  mousePosition: RefObject<XY | null>;
+};
+
 export const defaultEditorState: EditorState = {
   selectedObjectId: null,
   shouldStopPropagation: false,
   editingState: EDITING_STATES.DEFAULT,
 };
 
-export const EditorStateContext = createContext<{
+export const defaultEditorRefs: EditorRefs = {
+  objectPositionSnapshot: createRef<XYZ>(),
+  mousePositionSnapshot: createRef<XY>(),
+  mousePosition: createRef<XY>(),
+};
+
+export const EditorContext = createContext<{
   editorState: EditorState;
+  editorRefs: EditorRefs;
   setEditorState: Dispatch<SetStateAction<EditorState>>;
 }>({
   editorState: defaultEditorState,
+  editorRefs: defaultEditorRefs,
   setEditorState: () => {},
 });

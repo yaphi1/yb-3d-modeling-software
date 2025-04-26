@@ -1,23 +1,51 @@
 import { MouseEventHandler, useCallback, useContext } from 'react';
-import { EDITING_STATES, EditorStateContext } from '../contexts/EditorStateContext';
+import { produce } from 'immer';
+import { EDITING_STATES, EditorContext } from '../contexts/EditorContext';
+import { getSceneObjectById } from '../../helpers';
+import { SceneObjectsContext } from '../contexts/SceneObjectsContext';
 
 export function useMouseMoveHandler() {
-  const { editorState } = useContext(EditorStateContext);
+  const { editorState, editorRefs } = useContext(EditorContext);
+  const { setSceneObjects } = useContext(SceneObjectsContext);
 
-  const onMouseMove = useCallback<MouseEventHandler<HTMLDivElement>>((event) => {
-    if (editorState.editingState === EDITING_STATES.MOVE) {
-      editorState.selectedObjectId
-
-      console.log({
+  const onMouseMove = useCallback<MouseEventHandler<HTMLDivElement>>(
+    (event) => {
+      editorRefs.mousePosition.current = {
         x: event.clientX,
         y: event.clientY,
-      });
+      };
 
-      // get object by id
-    }
-  }, [editorState.editingState]);
+      if (editorState.editingState === EDITING_STATES.MOVE) {
+        const mouseStart = editorRefs.mousePositionSnapshot?.current?.x ?? 0;
+        const mouseEnd = editorRefs.mousePosition.current.x;
+        const mouseDistanceHorizontal = mouseEnd - mouseStart;
+
+        setSceneObjects(
+          produce((draft) => {
+            const selectedObject = getSceneObjectById({
+              id: editorState.selectedObjectId!,
+              sceneObjects: draft,
+            })!;
+
+            const startPosition = editorRefs.objectPositionSnapshot!.current!.z;
+            const distanceToMove = mouseDistanceHorizontal * 0.01;
+
+            selectedObject.position.z = startPosition - distanceToMove;
+          }),
+        );
+      }
+    },
+    [
+      editorRefs.mousePosition,
+      editorRefs.mousePositionSnapshot,
+      editorRefs.objectPositionSnapshot,
+      editorState.editingState,
+      editorState.selectedObjectId,
+      setSceneObjects,
+    ],
+  );
 
   return {
-    onMouseMove
+    onMouseMove,
   };
 }

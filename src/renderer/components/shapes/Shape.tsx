@@ -1,20 +1,19 @@
 import { JSX, useContext, useEffect, useMemo, useState } from 'react';
+import { produce } from 'immer';
 import { Cube } from './Cube';
-import { AllShapeProps, SHAPE_NAMES, SHAPE_TYPES, XYZ } from './shapeTypes';
+import { AllShapeProps, SHAPE_NAMES, SHAPE_TYPES } from './shapeTypes';
 import { Sphere } from './Sphere';
 import { useSelectionHelpers } from '../../useSelectionHelpers';
-import { EDITING_STATES, EditorStateContext } from '../contexts/EditorStateContext';
+import { EDITING_STATES, EditorContext } from '../contexts/EditorContext';
 import { useEditorControls } from '../controls/useEditorControls';
-import { produce } from 'immer';
-
-function xyzToArray(xyz: XYZ): [number, number, number] {
-  return [xyz.x, xyz.y, xyz.z];
-}
+import { SceneObjectsContext } from '../contexts/SceneObjectsContext';
+import { getSceneObjectById, xyzToArray } from '../../helpers';
 
 export function Shape({ shapeProps }: { shapeProps: AllShapeProps }) {
   const [isHovered, setIsHovered] = useState(false);
   const { selectShapeById } = useSelectionHelpers();
-  const { editorState, setEditorState } = useContext(EditorStateContext);
+  const { editorState, editorRefs, setEditorState } = useContext(EditorContext);
+  const { sceneObjects } = useContext(SceneObjectsContext);
   const { isPressedG, isPressedEsc } = useEditorControls();
 
   const isActive = useMemo(() => {
@@ -22,33 +21,48 @@ export function Shape({ shapeProps }: { shapeProps: AllShapeProps }) {
   }, [editorState.selectedObjectId, shapeProps.id]);
 
   useEffect(() => {
-    if (isActive && isPressedG) {
+    const isNotAlreadyMovingObject =
+      editorState.editingState !== EDITING_STATES.MOVE;
+    const shouldMoveObject = isActive && isPressedG && isNotAlreadyMovingObject;
+
+    if (shouldMoveObject) {
+      const sceneObject = getSceneObjectById({
+        id: editorState.selectedObjectId!,
+        sceneObjects,
+      })!;
+
+      editorRefs.objectPositionSnapshot.current = { ...sceneObject.position };
+      editorRefs.mousePositionSnapshot.current = {
+        ...(editorRefs.mousePosition.current ?? { x: 0, y: 0 }),
+      };
+
       setEditorState(
         produce((draft) => {
           draft.editingState = EDITING_STATES.MOVE;
-          console.log('move');
-          /*
-          startingShapePosition
-            getShapeById
-              get position from shape
-          startingMousePosition
-            get current mouse position from editor state
-          */
         }),
       );
     }
-  }, [isActive, isPressedG]);
+  }, [
+    isActive,
+    isPressedG,
+    editorRefs.mousePosition,
+    editorRefs.mousePositionSnapshot,
+    editorRefs.objectPositionSnapshot,
+    editorState.editingState,
+    editorState.selectedObjectId,
+    sceneObjects,
+    setEditorState,
+  ]);
 
   useEffect(() => {
     if (isPressedEsc) {
       setEditorState(
         produce((draft) => {
           draft.editingState = EDITING_STATES.DEFAULT;
-          console.log('default');
         }),
       );
     }
-  }, [isPressedEsc]);
+  }, [isPressedEsc, setEditorState]);
 
   const commonProps = {
     position: xyzToArray(shapeProps.position),

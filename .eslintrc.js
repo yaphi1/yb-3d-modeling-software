@@ -16,6 +16,7 @@ module.exports = {
     'no-shadow': 'off',
     '@typescript-eslint/no-shadow': 'error',
     'no-unused-vars': 'off',
+    'no-nested-ternary': 'off',
     '@typescript-eslint/no-unused-vars': 'error',
   },
   parserOptions: {

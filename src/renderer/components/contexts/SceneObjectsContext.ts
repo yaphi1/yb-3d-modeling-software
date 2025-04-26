@@ -2,7 +2,9 @@ import { createContext, Dispatch, SetStateAction } from 'react';
 import { v4 as generateUUID } from 'uuid';
 import { AllShapeProps, SHAPE_TYPES } from '../shapes/shapeTypes';
 
-export const defaultSceneObjects: Array<AllShapeProps> = [
+export type SceneObjects = Array<AllShapeProps>;
+
+export const defaultSceneObjects: SceneObjects = [
   {
     id: generateUUID(),
     sceneObjectName: SHAPE_TYPES.CUBE,
@@ -12,8 +14,8 @@ export const defaultSceneObjects: Array<AllShapeProps> = [
 ];
 
 export const SceneObjectsContext = createContext<{
-  sceneObjects: Array<AllShapeProps>;
-  setSceneObjects: Dispatch<SetStateAction<Array<AllShapeProps>>>;
+  sceneObjects: SceneObjects;
+  setSceneObjects: Dispatch<SetStateAction<SceneObjects>>;
 }>({
   sceneObjects: defaultSceneObjects,
   setSceneObjects: () => {},

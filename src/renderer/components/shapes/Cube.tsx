@@ -9,7 +9,9 @@ export function Cube(props: CustomMeshProps) {
     <mesh {...props} ref={meshRef}>
       <boxGeometry args={[1, 1, 1]} />
       <meshStandardMaterial
-        color={props.isActive ? '#0098db' : props.isHovered ? 'hotpink' : '#848586'}
+        color={
+          props.isActive ? '#0098db' : props.isHovered ? 'hotpink' : '#848586'
+        }
       />
     </mesh>
   );

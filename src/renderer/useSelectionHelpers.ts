@@ -1,14 +1,15 @@
 import { useCallback, useContext } from 'react';
 import { produce } from 'immer';
-import { EDITING_STATES, EditorStateContext } from './components/contexts/EditorStateContext';
+import {
+  EDITING_STATES,
+  EditorContext,
+} from './components/contexts/EditorContext';
 
 export function useSelectionHelpers() {
-  const { editorState, setEditorState } = useContext(EditorStateContext);
+  const { editorState, setEditorState } = useContext(EditorContext);
 
   const selectShapeById = useCallback(
     (id: string | null) => {
-      console.log({ id });
-      console.log('setting uuid to:', id);
       setEditorState(
         produce((draft) => {
           draft.selectedObjectId = id;
@@ -20,8 +21,9 @@ export function useSelectionHelpers() {
   );
 
   const deselectAll = useCallback(() => {
-    if (!editorState.shouldStopPropagation) {
-      console.log('setting uuid to: null');
+    const isClickOutsideObjects = !editorState.shouldStopPropagation;
+
+    if (isClickOutsideObjects) {
       setEditorState(
         produce((draft) => {
           draft.selectedObjectId = null;
@@ -30,7 +32,6 @@ export function useSelectionHelpers() {
       );
     }
 
-    console.log('setting shouldStopPropagation to false from canvas');
     setEditorState(
       produce((draft) => {
         draft.shouldStopPropagation = false;

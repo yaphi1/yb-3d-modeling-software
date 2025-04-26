@@ -10,15 +10,14 @@ export const CONTROLS = {
 export type CONTROLS_TYPE = keyof typeof CONTROLS;
 
 export function EditorControls({ children }: PropsWithChildren) {
-  const map = useMemo<KeyboardControlsEntry<CONTROLS_TYPE>[]>(() => [
-    { name: CONTROLS.G, keys: ['g'] },
-    { name: CONTROLS.S, keys: ['s'] },
-    { name: CONTROLS.ESC, keys: ['Escape'] },
-  ], []);
-
-  return (
-    <KeyboardControls map={map}>
-      {children}
-    </KeyboardControls>
+  const map = useMemo<KeyboardControlsEntry<CONTROLS_TYPE>[]>(
+    () => [
+      { name: CONTROLS.G, keys: ['g'] },
+      { name: CONTROLS.S, keys: ['s'] },
+      { name: CONTROLS.ESC, keys: ['Escape'] },
+    ],
+    [],
   );
+
+  return <KeyboardControls map={map}>{children}</KeyboardControls>;
 }
