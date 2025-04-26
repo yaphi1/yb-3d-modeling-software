@@ -1,20 +1,35 @@
-import { JSX, useContext, useEffect, useMemo, useState } from 'react';
+import {
+  JSX,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { produce } from 'immer';
 import { Cube } from './Cube';
 import { AllShapeProps, SHAPE_NAMES, SHAPE_TYPES } from './shapeTypes';
 import { Sphere } from './Sphere';
 import { useSelectionHelpers } from '../../useSelectionHelpers';
-import { EDITING_STATES, EditorContext } from '../contexts/EditorContext';
+import {
+  EDITING_STATES,
+  EditorContext,
+  EditorState,
+} from '../contexts/EditorContext';
 import { useEditorControls } from '../controls/useEditorControls';
-import { SceneObjectsContext } from '../contexts/SceneObjectsContext';
+import {
+  SceneObjects,
+  SceneObjectsContext,
+} from '../contexts/SceneObjectsContext';
 import { getSceneObjectById, xyzToArray } from '../../helpers';
 
 export function Shape({ shapeProps }: { shapeProps: AllShapeProps }) {
   const [isHovered, setIsHovered] = useState(false);
   const { selectShapeById } = useSelectionHelpers();
   const { editorState, editorRefs, setEditorState } = useContext(EditorContext);
+  const { setSceneObjects } = useContext(SceneObjectsContext);
   const { sceneObjects } = useContext(SceneObjectsContext);
-  const { isPressedG, isPressedEsc } = useEditorControls();
+  const { isPressedG, isPressedEsc, isPressedEnter } = useEditorControls();
 
   const isActive = useMemo(() => {
     return editorState.selectedObjectId === shapeProps.id;
@@ -37,7 +52,7 @@ export function Shape({ shapeProps }: { shapeProps: AllShapeProps }) {
       };
 
       setEditorState(
-        produce((draft) => {
+        produce((draft: EditorState) => {
           draft.editingState = EDITING_STATES.MOVE;
         }),
       );
@@ -54,22 +69,66 @@ export function Shape({ shapeProps }: { shapeProps: AllShapeProps }) {
     setEditorState,
   ]);
 
+  const restoreDefaultEditingState = useCallback(() => {
+    setEditorState(
+      produce((draft: EditorState) => {
+        draft.editingState = EDITING_STATES.DEFAULT;
+      }),
+    );
+  }, [setEditorState]);
+
+  const handleShapeClick = useCallback(() => {
+    selectShapeById(shapeProps.id);
+    restoreDefaultEditingState();
+  }, [selectShapeById, shapeProps.id, restoreDefaultEditingState]);
+
+  useEffect(() => {
+    if (isPressedEnter) {
+      restoreDefaultEditingState();
+    }
+  }, [isPressedEnter, restoreDefaultEditingState]);
+
+  const cancelShapeUpdates = useCallback(() => {
+    setSceneObjects(
+      produce((draft: SceneObjects) => {
+        const selectedObject = getSceneObjectById({
+          id: editorState.selectedObjectId!,
+          sceneObjects: draft,
+        })!;
+
+        // TODO: Do this for rotation and scale too
+        const startPosition = editorRefs.objectPositionSnapshot!.current!;
+
+        selectedObject.position = { ...startPosition };
+      }),
+    );
+  }, [
+    setSceneObjects,
+    editorRefs.objectPositionSnapshot,
+    editorState.selectedObjectId,
+  ]);
+
   useEffect(() => {
     if (isPressedEsc) {
-      setEditorState(
-        produce((draft) => {
-          draft.editingState = EDITING_STATES.DEFAULT;
-        }),
-      );
+      const isNotDefaultEditingState =
+        editorState.editingState !== EDITING_STATES.DEFAULT;
+
+      if (isNotDefaultEditingState) {
+        cancelShapeUpdates();
+        restoreDefaultEditingState();
+      }
     }
-  }, [isPressedEsc, setEditorState]);
+  }, [
+    isPressedEsc,
+    restoreDefaultEditingState,
+    cancelShapeUpdates,
+    editorState.editingState,
+  ]);
 
   const commonProps = {
     position: xyzToArray(shapeProps.position),
     scale: xyzToArray(shapeProps.scale),
-    onClick: () => {
-      selectShapeById(shapeProps.id);
-    },
+    onClick: handleShapeClick,
     onPointerOver: () => setIsHovered(true),
     onPointerOut: () => setIsHovered(false),
     isHovered,

@@ -2,7 +2,10 @@ import { MouseEventHandler, useCallback, useContext } from 'react';
 import { produce } from 'immer';
 import { EDITING_STATES, EditorContext } from '../contexts/EditorContext';
 import { getSceneObjectById } from '../../helpers';
-import { SceneObjectsContext } from '../contexts/SceneObjectsContext';
+import {
+  SceneObjects,
+  SceneObjectsContext,
+} from '../contexts/SceneObjectsContext';
 
 export function useMouseMoveHandler() {
   const { editorState, editorRefs } = useContext(EditorContext);
@@ -21,7 +24,7 @@ export function useMouseMoveHandler() {
         const mouseDistanceHorizontal = mouseEnd - mouseStart;
 
         setSceneObjects(
-          produce((draft) => {
+          produce((draft: SceneObjects) => {
             const selectedObject = getSceneObjectById({
               id: editorState.selectedObjectId!,
               sceneObjects: draft,

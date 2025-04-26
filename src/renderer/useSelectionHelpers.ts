@@ -3,6 +3,7 @@ import { produce } from 'immer';
 import {
   EDITING_STATES,
   EditorContext,
+  EditorState,
 } from './components/contexts/EditorContext';
 
 export function useSelectionHelpers() {
@@ -11,7 +12,7 @@ export function useSelectionHelpers() {
   const selectShapeById = useCallback(
     (id: string | null) => {
       setEditorState(
-        produce((draft) => {
+        produce((draft: EditorState) => {
           draft.selectedObjectId = id;
           draft.shouldStopPropagation = true;
         }),
@@ -25,7 +26,7 @@ export function useSelectionHelpers() {
 
     if (isClickOutsideObjects) {
       setEditorState(
-        produce((draft) => {
+        produce((draft: EditorState) => {
           draft.selectedObjectId = null;
           draft.editingState = EDITING_STATES.DEFAULT;
         }),
@@ -33,7 +34,7 @@ export function useSelectionHelpers() {
     }
 
     setEditorState(
-      produce((draft) => {
+      produce((draft: EditorState) => {
         draft.shouldStopPropagation = false;
       }),
     );

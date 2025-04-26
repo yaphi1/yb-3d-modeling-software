@@ -22,5 +22,5 @@ move shape
     - ✅ on mouse move:
       - ✅ calculate how far the mouse is from its starting point
       - ✅ change the position of the active object proportionally to how far the mouse is from the starting point
-    - on click or enter, save new position (regardless of where click happens)
-    - on esc, revert to original position
+    - ✅ on click or enter, save new position (regardless of where click happens)
+    - ✅ on esc, revert to original position
