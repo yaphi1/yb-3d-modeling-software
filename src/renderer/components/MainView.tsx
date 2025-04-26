@@ -5,13 +5,24 @@ import { Lighting } from './Lighting';
 import { SceneObjects } from './SceneObjects';
 import { useSelectionHelpers } from '../useSelectionHelpers';
 import { useMouseMoveHandler } from './controls/useMouseMoveHandler';
+import { useContext } from 'react';
+import { EDITING_STATES, EditorContext } from './contexts/EditorContext';
 
 export function MainView() {
   const { deselectAll } = useSelectionHelpers();
   const { onMouseMove } = useMouseMoveHandler();
+  const { editorState } = useContext(EditorContext);
+
+  const isMoving = editorState.editingState === EDITING_STATES.MOVE;
 
   return (
-    <Canvas onClick={deselectAll} onMouseMove={onMouseMove}>
+    <Canvas
+      onClick={deselectAll}
+      onMouseMove={onMouseMove}
+      style={{
+        cursor: isMoving ? 'move' : 'auto',
+      }}
+    >
       <Lighting />
       <SceneObjects />
       <EditorGrid />
