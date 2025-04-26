@@ -4,6 +4,9 @@ import { useMemo, PropsWithChildren } from 'react';
 export const CONTROLS = {
   G: 'G',
   S: 'S',
+  X: 'X',
+  Y: 'Y',
+  Z: 'Z',
   ESC: 'ESC',
   ENTER: 'ENTER',
 } as const;
@@ -15,6 +18,9 @@ export function EditorControls({ children }: PropsWithChildren) {
     () => [
       { name: CONTROLS.G, keys: ['g'] },
       { name: CONTROLS.S, keys: ['s'] },
+      { name: CONTROLS.X, keys: ['x'] },
+      { name: CONTROLS.Y, keys: ['y'] },
+      { name: CONTROLS.Z, keys: ['z'] },
       { name: CONTROLS.ESC, keys: ['Escape'] },
       { name: CONTROLS.ENTER, keys: ['Enter'] },
     ],
