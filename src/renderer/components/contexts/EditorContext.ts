@@ -12,8 +12,15 @@ export const EDITING_STATES = {
   MOVE: 'MOVE',
   SCALE: 'SCALE',
 } as const;
-
 type EditingStatesType = keyof typeof EDITING_STATES;
+
+export const AXES = {
+  DEFAULT: 'DEFAULT',
+  x: 'x',
+  y: 'y',
+  z: 'z',
+} as const;
+export type AxesType = keyof typeof AXES;
 
 export type EditorState = {
   selectedObjectId: string | null;
@@ -24,6 +31,7 @@ export type EditorState = {
    */
   shouldStopPropagation: boolean;
   editingState: EditingStatesType;
+  chosenAxis: AxesType;
 };
 
 export type EditorRefs = {
@@ -36,6 +44,7 @@ export const defaultEditorState: EditorState = {
   selectedObjectId: null,
   shouldStopPropagation: false,
   editingState: EDITING_STATES.DEFAULT,
+  chosenAxis: AXES.DEFAULT,
 };
 
 export const defaultEditorRefs: EditorRefs = {

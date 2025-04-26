@@ -1,6 +1,7 @@
 import { useCallback, useContext } from 'react';
 import { produce } from 'immer';
 import {
+  AXES,
   EDITING_STATES,
   EditorContext,
   EditorState,
@@ -29,6 +30,7 @@ export function useSelectionHelpers() {
         produce((draft: EditorState) => {
           draft.selectedObjectId = null;
           draft.editingState = EDITING_STATES.DEFAULT;
+          draft.chosenAxis = AXES.DEFAULT;
         }),
       );
     }

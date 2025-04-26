@@ -12,6 +12,7 @@ import { AllShapeProps, SHAPE_NAMES, SHAPE_TYPES } from './shapeTypes';
 import { Sphere } from './Sphere';
 import { useSelectionHelpers } from '../../useSelectionHelpers';
 import {
+  AXES,
   EDITING_STATES,
   EditorContext,
   EditorState,
@@ -38,6 +39,7 @@ export function Shape({ shapeProps }: { shapeProps: AllShapeProps }) {
   useEffect(() => {
     const isNotAlreadyMovingObject =
       editorState.editingState !== EDITING_STATES.MOVE;
+
     const shouldMoveObject = isActive && isPressedG && isNotAlreadyMovingObject;
 
     if (shouldMoveObject) {
@@ -60,9 +62,7 @@ export function Shape({ shapeProps }: { shapeProps: AllShapeProps }) {
   }, [
     isActive,
     isPressedG,
-    editorRefs.mousePosition,
-    editorRefs.mousePositionSnapshot,
-    editorRefs.objectPositionSnapshot,
+    editorRefs,
     editorState.editingState,
     editorState.selectedObjectId,
     sceneObjects,
@@ -73,6 +73,7 @@ export function Shape({ shapeProps }: { shapeProps: AllShapeProps }) {
     setEditorState(
       produce((draft: EditorState) => {
         draft.editingState = EDITING_STATES.DEFAULT;
+        draft.chosenAxis = AXES.DEFAULT;
       }),
     );
   }, [setEditorState]);

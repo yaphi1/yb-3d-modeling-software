@@ -1,0 +1,103 @@
+import { Line } from '@react-three/drei';
+import { useCallback, useContext, useEffect } from 'react';
+import { produce } from 'immer';
+import { useEditorControls } from './controls/useEditorControls';
+import {
+  AXES,
+  AxesType,
+  EDITING_STATES,
+  EditorContext,
+  EditorState,
+} from './contexts/EditorContext';
+
+export function Axes() {
+  const { editorState, editorRefs, setEditorState } = useContext(EditorContext);
+  const { isPressedX, isPressedY, isPressedZ } = useEditorControls();
+
+  const toggleAxis = useCallback(
+    (axis: AxesType) => {
+      setEditorState(
+        produce((draft: EditorState) => {
+          const isThisAxisAlreadyPicked = draft.chosenAxis === axis;
+          const axisToPick = isThisAxisAlreadyPicked ? AXES.DEFAULT : axis;
+          draft.chosenAxis = axisToPick;
+        }),
+      );
+    },
+    [setEditorState],
+  );
+
+  useEffect(() => {
+    if (isPressedX) {
+      if (editorState.editingState !== EDITING_STATES.DEFAULT) {
+        toggleAxis(AXES.x);
+      }
+    }
+  }, [isPressedX, editorState.editingState, toggleAxis]);
+
+  useEffect(() => {
+    if (isPressedY) {
+      if (editorState.editingState !== EDITING_STATES.DEFAULT) {
+        toggleAxis(AXES.y);
+      }
+    }
+  }, [isPressedY, editorState.editingState, toggleAxis]);
+
+  useEffect(() => {
+    if (isPressedZ) {
+      if (editorState.editingState !== EDITING_STATES.DEFAULT) {
+        toggleAxis(AXES.z);
+      }
+    }
+  }, [isPressedZ, editorState.editingState, toggleAxis]);
+
+  const isModifyingObject = editorState.editingState !== EDITING_STATES.DEFAULT;
+  const isDefaultAxis = editorState.chosenAxis === AXES.DEFAULT;
+  const isModifyingOnDefaultAxis = isModifyingObject && isDefaultAxis;
+
+  const shouldShowX = editorState.chosenAxis === AXES.x;
+  const shouldShowY = editorState.chosenAxis === AXES.y;
+  const shouldShowZ =
+    editorState.chosenAxis === AXES.z || isModifyingOnDefaultAxis;
+
+  const { x, y, z } = editorRefs.objectPositionSnapshot.current ?? {
+    x: 0,
+    y: 0,
+    z: 0,
+  };
+
+  return (
+    <>
+      {shouldShowX && (
+        <Line
+          points={[
+            [-40, y, z],
+            [40, y, z],
+          ]}
+          color="#a16169"
+          lineWidth={3}
+        />
+      )}
+      {shouldShowY && (
+        <Line
+          points={[
+            [x, -40, z],
+            [x, 40, z],
+          ]}
+          color="#0098db"
+          lineWidth={3}
+        />
+      )}
+      {shouldShowZ && (
+        <Line
+          points={[
+            [x, y, -40],
+            [x, y, 40],
+          ]}
+          color="#87a259"
+          lineWidth={3}
+        />
+      )}
+    </>
+  );
+}

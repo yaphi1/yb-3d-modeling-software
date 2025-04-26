@@ -1,6 +1,6 @@
 import { MouseEventHandler, useCallback, useContext } from 'react';
 import { produce } from 'immer';
-import { EDITING_STATES, EditorContext } from '../contexts/EditorContext';
+import { AXES, EDITING_STATES, EditorContext } from '../contexts/EditorContext';
 import { getSceneObjectById } from '../../helpers';
 import {
   SceneObjects,
@@ -19,10 +19,18 @@ export function useMouseMoveHandler() {
       };
 
       if (editorState.editingState === EDITING_STATES.MOVE) {
-        const mouseStart = editorRefs.mousePositionSnapshot?.current?.x ?? 0;
-        const mouseEnd = editorRefs.mousePosition.current.x;
-        const mouseDistanceHorizontal = mouseEnd - mouseStart;
+        const isChosenAxisVertical = editorState.chosenAxis === AXES.y;
 
+        const mouseAxis = isChosenAxisVertical ? 'y' : 'x';
+        const mouseStart =
+          editorRefs.mousePositionSnapshot?.current?.[mouseAxis] ?? 0;
+        const mouseEnd = editorRefs.mousePosition.current[mouseAxis];
+        const mouseDistance = mouseEnd - mouseStart;
+
+        const movementAxis =
+          editorState.chosenAxis === AXES.DEFAULT
+            ? 'z'
+            : editorState.chosenAxis;
         setSceneObjects(
           produce((draft: SceneObjects) => {
             const selectedObject = getSceneObjectById({
@@ -30,22 +38,23 @@ export function useMouseMoveHandler() {
               sceneObjects: draft,
             })!;
 
-            const startPosition = editorRefs.objectPositionSnapshot!.current!.z;
-            const distanceToMove = mouseDistanceHorizontal * 0.01;
+            // TODO: Make direction dynamic depending on camera rotation
+            const shouldReverse = editorState.chosenAxis === AXES.x;
+            const direction = shouldReverse ? -1 : 1;
 
-            selectedObject.position.z = startPosition - distanceToMove;
+            const startPosition = editorRefs.objectPositionSnapshot!.current!;
+            const startAlongAxis = startPosition[movementAxis];
+            const distanceToMove = direction * mouseDistance * 0.01;
+
+            selectedObject.position = {
+              ...startPosition,
+              ...{ [movementAxis]: startAlongAxis - distanceToMove },
+            };
           }),
         );
       }
     },
-    [
-      editorRefs.mousePosition,
-      editorRefs.mousePositionSnapshot,
-      editorRefs.objectPositionSnapshot,
-      editorState.editingState,
-      editorState.selectedObjectId,
-      setSceneObjects,
-    ],
+    [editorRefs, editorState, setSceneObjects],
   );
 
   return {
