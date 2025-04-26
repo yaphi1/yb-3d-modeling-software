@@ -1,6 +1,8 @@
 # TODO
 
 - move shape
+  - add movement cursor
+  - add axes
 - create/delete shapes
 - scale shape
 - undo/redo
@@ -11,7 +13,7 @@
 move shape
   - create keyboard listeners
   - create state for editingMode
-  - on "m" key:
+  - on "g" key:
     - set editingMode to "move"
     - store original position of active object
     - store original mouse position

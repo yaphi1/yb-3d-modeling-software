@@ -3,7 +3,7 @@ import { Cube } from './Cube';
 import { AllShapeProps, SHAPE_NAMES, SHAPE_TYPES, XYZ } from './shapeTypes';
 import { Sphere } from './Sphere';
 import { useSelectionHelpers } from '../../useSelectionHelpers';
-import { EDITING_STATES, EditorStateContext } from '../../editorContextHelpers';
+import { EDITING_STATES, EditorStateContext } from '../contexts/EditorStateContext';
 import { useEditorControls } from '../controls/useEditorControls';
 import { produce } from 'immer';
 
@@ -27,6 +27,13 @@ export function Shape({ shapeProps }: { shapeProps: AllShapeProps }) {
         produce((draft) => {
           draft.editingState = EDITING_STATES.MOVE;
           console.log('move');
+          /*
+          startingShapePosition
+            getShapeById
+              get position from shape
+          startingMousePosition
+            get current mouse position from editor state
+          */
         }),
       );
     }
@@ -59,7 +66,7 @@ export function Shape({ shapeProps }: { shapeProps: AllShapeProps }) {
     [SHAPE_TYPES.CUBE]: <Cube {...commonProps} />,
     [SHAPE_TYPES.SPHERE]: <Sphere {...commonProps} />,
   };
-  const chosenShape = shapeComponentList[shapeProps.shapeName];
+  const chosenShape = shapeComponentList[shapeProps.sceneObjectName];
 
   return chosenShape;
 }
