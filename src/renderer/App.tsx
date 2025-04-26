@@ -1,11 +1,11 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import './App.css';
 import { MainView } from './components/MainView';
-import { EditorStateContext, useEditorContext } from './useEditorContext';
+import { defaultEditorState, EditorState, EditorStateContext } from './editorContextHelpers';
 import { EditorControls } from './components/controls/EditorControls';
 
 export default function App() {
-  const { editorState, setEditorState } = useEditorContext();
+  const [editorState, setEditorState] = useState<EditorState>(defaultEditorState);
 
   const editorStateContext = useMemo(() => {
     return { editorState, setEditorState };

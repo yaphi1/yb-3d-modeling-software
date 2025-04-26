@@ -1,4 +1,4 @@
-import { createContext, Dispatch, SetStateAction, useState } from 'react';
+import { createContext, Dispatch, SetStateAction } from 'react';
 
 export const EDITING_STATES = {
   DEFAULT: 'DEFAULT',
@@ -8,7 +8,7 @@ export const EDITING_STATES = {
 
 type EditingStatesType = keyof typeof EDITING_STATES;
 
-type EditorState = {
+export type EditorState = {
   selectedObjectId: string | null;
   /**
    * Since all these 3d objects are all in one canvas,
@@ -19,7 +19,7 @@ type EditorState = {
   editingState: EditingStatesType;
 };
 
-const defaultEditorState: EditorState = {
+export const defaultEditorState: EditorState = {
   selectedObjectId: null,
   shouldStopPropagation: false,
   editingState: EDITING_STATES.DEFAULT,
@@ -32,10 +32,3 @@ export const EditorStateContext = createContext<{
   editorState: defaultEditorState,
   setEditorState: () => {},
 });
-
-export function useEditorContext() {
-  const [editorState, setEditorState] =
-    useState<EditorState>(defaultEditorState);
-
-  return { editorState, setEditorState };
-}

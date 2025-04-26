@@ -3,7 +3,7 @@ import { Cube } from './Cube';
 import { AllShapeProps, SHAPE_NAMES, SHAPE_TYPES, XYZ } from './shapeTypes';
 import { Sphere } from './Sphere';
 import { useSelectionHelpers } from '../../useSelectionHelpers';
-import { EDITING_STATES, EditorStateContext } from '../../useEditorContext';
+import { EDITING_STATES, EditorStateContext } from '../../editorContextHelpers';
 import { useEditorControls } from '../controls/useEditorControls';
 import { produce } from 'immer';
 

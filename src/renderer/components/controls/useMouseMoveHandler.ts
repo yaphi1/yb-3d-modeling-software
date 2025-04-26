@@ -1,5 +1,5 @@
 import { MouseEventHandler, useCallback, useContext } from 'react';
-import { EDITING_STATES, EditorStateContext } from '../../useEditorContext';
+import { EDITING_STATES, EditorStateContext } from '../../editorContextHelpers';
 
 export function useMouseMoveHandler() {
   const { editorState } = useContext(EditorStateContext);

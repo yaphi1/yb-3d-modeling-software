@@ -6,7 +6,7 @@ import { SceneObjects } from './SceneObjects';
 import { useSelectionHelpers } from '../useSelectionHelpers';
 import { useMouseMoveHandler } from './controls/useMouseMoveHandler';
 import { useContext, useEffect } from 'react';
-import { EditorStateContext } from '../useEditorContext';
+import { EditorStateContext } from '../editorContextHelpers';
 
 const isDebug = true;
 
