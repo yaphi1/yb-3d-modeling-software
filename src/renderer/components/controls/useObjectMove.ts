@@ -8,12 +8,14 @@ import {
 import { getSceneObjectById } from '../../helpers';
 import { useEditorControls } from './useEditorControls';
 import { useEditorStateHelpers } from '../../useEditorStateHelpers';
+import { useSceneObjectUpdaters } from '../useSceneObjectUpdaters';
 
 export function useObjectMove() {
   const { editorState, editorRefs } = useContext(EditorContext);
   const { sceneObjects, setSceneObjects } = useContext(SceneObjectsContext);
   const { isPressedG } = useEditorControls();
   const { setEditingStateToMove } = useEditorStateHelpers();
+  const { storeSnapshotOfObjectAndMouse } = useSceneObjectUpdaters();
 
   const listenForObjectMove = useCallback(
     (isActive: boolean) => {
@@ -29,11 +31,7 @@ export function useObjectMove() {
           sceneObjects,
         })!;
 
-        editorRefs.objectPositionSnapshot.current = { ...sceneObject.position };
-        editorRefs.mousePositionSnapshot.current = {
-          ...(editorRefs.mousePosition.current ?? { x: 0, y: 0 }),
-        };
-
+        storeSnapshotOfObjectAndMouse({ editorRefs, sceneObject });
         setEditingStateToMove();
       }
     },
@@ -44,6 +42,7 @@ export function useObjectMove() {
       editorState.selectedObjectId,
       sceneObjects,
       setEditingStateToMove,
+      storeSnapshotOfObjectAndMouse,
     ],
   );
 

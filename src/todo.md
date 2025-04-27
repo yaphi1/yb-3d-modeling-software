@@ -1,7 +1,5 @@
 # TODO
 
-- fix bug where esc resets to stale position when scaling after a move; snapshot should store everything
-- scale shape
 - rotate shape
 - view modes (wireframe, solid, textures)
 - copy/paste

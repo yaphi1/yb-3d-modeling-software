@@ -9,12 +9,14 @@ import { getSceneObjectById } from '../../helpers';
 import { useEditorControls } from './useEditorControls';
 import { useEditorStateHelpers } from '../../useEditorStateHelpers';
 import { getDistance2d } from '../../mathHelpers';
+import { useSceneObjectUpdaters } from '../useSceneObjectUpdaters';
 
 export function useObjectScale() {
   const { editorState, editorRefs } = useContext(EditorContext);
   const { sceneObjects, setSceneObjects } = useContext(SceneObjectsContext);
   const { isPressedS } = useEditorControls();
   const { setEditingStateToScale } = useEditorStateHelpers();
+  const { storeSnapshotOfObjectAndMouse } = useSceneObjectUpdaters();
 
   const listenForObjectScale = useCallback(
     (isActive: boolean) => {
@@ -30,11 +32,7 @@ export function useObjectScale() {
           sceneObjects,
         })!;
 
-        editorRefs.objectScaleSnapshot.current = { ...sceneObject.scale };
-        editorRefs.mousePositionSnapshot.current = {
-          ...(editorRefs.mousePosition.current ?? { x: 0, y: 0 }),
-        };
-
+        storeSnapshotOfObjectAndMouse({ editorRefs, sceneObject });
         setEditingStateToScale();
       }
     },
@@ -45,6 +43,7 @@ export function useObjectScale() {
       editorState.selectedObjectId,
       sceneObjects,
       setEditingStateToScale,
+      storeSnapshotOfObjectAndMouse,
     ],
   );
 
