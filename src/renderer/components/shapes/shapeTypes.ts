@@ -23,6 +23,7 @@ export type BaseShapeProps = {
   sceneObjectName: SHAPE_NAMES;
   position: XYZ;
   scale: XYZ;
+  rotation: XYZ;
 };
 
 export type SphereProps = BaseShapeProps & {};

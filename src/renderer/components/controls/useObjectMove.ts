@@ -70,13 +70,13 @@ export function useObjectMove() {
         const shouldReverse = editorState.chosenAxis === AXES.x;
         const direction = shouldReverse ? -1 : 1;
 
-        const startPosition = editorRefs.objectPositionSnapshot!.current!;
-        const startAlongAxis = startPosition[movementAxis];
+        const startingPosition = editorRefs.objectPositionSnapshot!.current!;
+        const startingPositionAlongAxis = startingPosition[movementAxis];
         const distanceToMove = direction * mouseDistance * 0.01;
 
         selectedObject.position = {
-          ...startPosition,
-          ...{ [movementAxis]: startAlongAxis - distanceToMove },
+          ...startingPosition,
+          ...{ [movementAxis]: startingPositionAlongAxis - distanceToMove },
         };
       }),
     );

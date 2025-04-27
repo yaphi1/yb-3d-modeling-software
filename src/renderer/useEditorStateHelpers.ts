@@ -32,9 +32,27 @@ export function useEditorStateHelpers() {
       }),
     );
   }, [setEditorState]);
+  
+  const setEditingStateToScale = useCallback(() => {
+    setEditorState(
+      produce((draft: EditorState) => {
+        draft.editingState = EDITING_STATES.SCALE;
+      }),
+    );
+  }, [setEditorState]);
+  
+  const setEditingStateToRotate = useCallback(() => {
+    setEditorState(
+      produce((draft: EditorState) => {
+        draft.editingState = EDITING_STATES.ROTATE;
+      }),
+    );
+  }, [setEditorState]);
 
   return {
     setEditingStateToDefault,
     setEditingStateToMove,
+    setEditingStateToScale,
+    setEditingStateToRotate,
   };
 }

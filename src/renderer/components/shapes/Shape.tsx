@@ -20,11 +20,13 @@ import {
 import { getSceneObjectById, xyzToArray } from '../../helpers';
 import { useEditorStateHelpers } from '../../useEditorStateHelpers';
 import { useObjectMove } from '../controls/useObjectMove';
+import { useObjectScale } from '../controls/useObjectScale';
 
 export function Shape({ shapeProps }: { shapeProps: AllShapeProps }) {
   const [isHovered, setIsHovered] = useState(false);
   const { selectShapeById } = useSelectionHelpers();
   const { listenForObjectMove } = useObjectMove();
+  const { listenForObjectScale } = useObjectScale();
   const { editorState, editorRefs } = useContext(EditorContext);
   const { setSceneObjects } = useContext(SceneObjectsContext);
   const { isPressedEsc, isPressedEnter } = useEditorControls();
@@ -37,6 +39,10 @@ export function Shape({ shapeProps }: { shapeProps: AllShapeProps }) {
   useEffect(() => {
     listenForObjectMove(isActive);
   }, [listenForObjectMove, isActive]);
+  
+  useEffect(() => {
+    listenForObjectScale(isActive);
+  }, [listenForObjectScale, isActive]);
 
   const handleShapeClick = useCallback(() => {
     selectShapeById(shapeProps.id);
@@ -57,15 +63,16 @@ export function Shape({ shapeProps }: { shapeProps: AllShapeProps }) {
           sceneObjects: draft,
         })!;
 
-        const startPosition = editorRefs.objectPositionSnapshot!.current!;
-        const startScale = editorRefs.objectScaleSnapshot!.current!;
-        const startRotation = editorRefs.objectRotationSnapshot!.current!;
+        const zeroes = { x: 0, y: 0, z: 0 };
+        const ones = { x: 1, y: 1, z: 1 };
 
-        selectedObject.position = {
-          ...startPosition,
-          ...startScale,
-          ...startRotation,
-        };
+        const startingPosition = editorRefs.objectPositionSnapshot.current ?? zeroes;
+        const startingScale = editorRefs.objectScaleSnapshot.current ?? ones;
+        const startingRotation = editorRefs.objectRotationSnapshot.current ?? zeroes;
+
+        selectedObject.position = { ...startingPosition };
+        selectedObject.scale = { ...startingScale };
+        selectedObject.rotation = { ...startingRotation };
       }),
     );
   }, [
