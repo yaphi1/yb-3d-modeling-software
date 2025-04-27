@@ -11,26 +11,24 @@ import { Cube } from './Cube';
 import { AllShapeProps, SHAPE_NAMES, SHAPE_TYPES } from './shapeTypes';
 import { Sphere } from './Sphere';
 import { useSelectionHelpers } from '../../useSelectionHelpers';
-import {
-  AXES,
-  EDITING_STATES,
-  EditorContext,
-  EditorState,
-} from '../contexts/EditorContext';
+import { EDITING_STATES, EditorContext } from '../contexts/EditorContext';
 import { useEditorControls } from '../controls/useEditorControls';
 import {
   SceneObjects,
   SceneObjectsContext,
 } from '../contexts/SceneObjectsContext';
 import { getSceneObjectById, xyzToArray } from '../../helpers';
+import { useEditorStateHelpers } from '../../useEditorStateHelpers';
 
 export function Shape({ shapeProps }: { shapeProps: AllShapeProps }) {
   const [isHovered, setIsHovered] = useState(false);
   const { selectShapeById } = useSelectionHelpers();
-  const { editorState, editorRefs, setEditorState } = useContext(EditorContext);
+  const { editorState, editorRefs } = useContext(EditorContext);
   const { setSceneObjects } = useContext(SceneObjectsContext);
   const { sceneObjects } = useContext(SceneObjectsContext);
   const { isPressedG, isPressedEsc, isPressedEnter } = useEditorControls();
+  const { setEditingStateToDefault, setEditingStateToMove } =
+    useEditorStateHelpers();
 
   const isActive = useMemo(() => {
     return editorState.selectedObjectId === shapeProps.id;
@@ -53,11 +51,7 @@ export function Shape({ shapeProps }: { shapeProps: AllShapeProps }) {
         ...(editorRefs.mousePosition.current ?? { x: 0, y: 0 }),
       };
 
-      setEditorState(
-        produce((draft: EditorState) => {
-          draft.editingState = EDITING_STATES.MOVE;
-        }),
-      );
+      setEditingStateToMove();
     }
   }, [
     isActive,
@@ -66,28 +60,19 @@ export function Shape({ shapeProps }: { shapeProps: AllShapeProps }) {
     editorState.editingState,
     editorState.selectedObjectId,
     sceneObjects,
-    setEditorState,
+    setEditingStateToMove,
   ]);
-
-  const restoreDefaultEditingState = useCallback(() => {
-    setEditorState(
-      produce((draft: EditorState) => {
-        draft.editingState = EDITING_STATES.DEFAULT;
-        draft.chosenAxis = AXES.DEFAULT;
-      }),
-    );
-  }, [setEditorState]);
 
   const handleShapeClick = useCallback(() => {
     selectShapeById(shapeProps.id);
-    restoreDefaultEditingState();
-  }, [selectShapeById, shapeProps.id, restoreDefaultEditingState]);
+    setEditingStateToDefault({ keepSelection: true });
+  }, [selectShapeById, shapeProps.id, setEditingStateToDefault]);
 
   useEffect(() => {
     if (isPressedEnter) {
-      restoreDefaultEditingState();
+      setEditingStateToDefault({ keepSelection: true });
     }
-  }, [isPressedEnter, restoreDefaultEditingState]);
+  }, [isPressedEnter, setEditingStateToDefault]);
 
   const cancelShapeUpdates = useCallback(() => {
     setSceneObjects(
@@ -116,12 +101,12 @@ export function Shape({ shapeProps }: { shapeProps: AllShapeProps }) {
 
       if (isNotDefaultEditingState) {
         cancelShapeUpdates();
-        restoreDefaultEditingState();
+        setEditingStateToDefault({ keepSelection: true });
       }
     }
   }, [
     isPressedEsc,
-    restoreDefaultEditingState,
+    setEditingStateToDefault,
     cancelShapeUpdates,
     editorState.editingState,
   ]);

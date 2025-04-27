@@ -11,14 +11,18 @@ export function useEditorControls() {
   const isPressedEnter = useKeyboardControls<CONTROLS_TYPE>(
     (state) => state.ENTER,
   );
+  const isPressedDelete = useKeyboardControls<CONTROLS_TYPE>(
+    (state) => state.DELETE,
+  );
 
   return {
     isPressedG,
     isPressedS,
-    isPressedEsc,
-    isPressedEnter,
     isPressedX,
     isPressedY,
     isPressedZ,
+    isPressedEsc,
+    isPressedEnter,
+    isPressedDelete,
   };
 }

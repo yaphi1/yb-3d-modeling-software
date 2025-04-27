@@ -1,14 +1,14 @@
 import { useCallback, useContext } from 'react';
 import { produce } from 'immer';
 import {
-  AXES,
-  EDITING_STATES,
   EditorContext,
   EditorState,
 } from './components/contexts/EditorContext';
+import { useEditorStateHelpers } from './useEditorStateHelpers';
 
 export function useSelectionHelpers() {
   const { editorState, setEditorState } = useContext(EditorContext);
+  const { setEditingStateToDefault } = useEditorStateHelpers();
 
   const selectShapeById = useCallback(
     (id: string | null) => {
@@ -26,13 +26,7 @@ export function useSelectionHelpers() {
     const isClickOutsideObjects = !editorState.shouldStopPropagation;
 
     if (isClickOutsideObjects) {
-      setEditorState(
-        produce((draft: EditorState) => {
-          draft.selectedObjectId = null;
-          draft.editingState = EDITING_STATES.DEFAULT;
-          draft.chosenAxis = AXES.DEFAULT;
-        }),
-      );
+      setEditingStateToDefault({ keepSelection: false });
     }
 
     setEditorState(
@@ -40,7 +34,11 @@ export function useSelectionHelpers() {
         draft.shouldStopPropagation = false;
       }),
     );
-  }, [setEditorState, editorState.shouldStopPropagation]);
+  }, [
+    setEditorState,
+    editorState.shouldStopPropagation,
+    setEditingStateToDefault,
+  ]);
 
   return {
     selectShapeById,

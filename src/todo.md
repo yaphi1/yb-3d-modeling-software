@@ -1,6 +1,5 @@
 # TODO
 
-- create/delete shapes
 - scale shape
 - rotate shape
 - undo/redo

@@ -9,6 +9,7 @@ export const CONTROLS = {
   Z: 'Z',
   ESC: 'ESC',
   ENTER: 'ENTER',
+  DELETE: 'DELETE',
 } as const;
 
 export type CONTROLS_TYPE = keyof typeof CONTROLS;
@@ -23,6 +24,7 @@ export function EditorControls({ children }: PropsWithChildren) {
       { name: CONTROLS.Z, keys: ['z'] },
       { name: CONTROLS.ESC, keys: ['Escape'] },
       { name: CONTROLS.ENTER, keys: ['Enter'] },
+      { name: CONTROLS.DELETE, keys: ['Backspace'] },
     ],
     [],
   );
