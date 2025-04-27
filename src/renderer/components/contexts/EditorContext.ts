@@ -33,6 +33,7 @@ export type EditorRefs = {
   objectPositionSnapshot: RefObject<XYZ | null>;
   objectScaleSnapshot: RefObject<XYZ | null>;
   objectRotationSnapshot: RefObject<XYZ | null>;
+  objectCoordsIn2DViewport: RefObject<XY | null>;
   mousePositionSnapshot: RefObject<XY | null>;
   mousePosition: RefObject<XY | null>;
 };
@@ -47,6 +48,7 @@ export const defaultEditorRefs: EditorRefs = {
   objectPositionSnapshot: createRef<XYZ>(),
   objectScaleSnapshot: createRef<XYZ>(),
   objectRotationSnapshot: createRef<XYZ>(),
+  objectCoordsIn2DViewport: createRef<XY>(),
   mousePositionSnapshot: createRef<XY>(),
   mousePosition: createRef<XY>(),
 };

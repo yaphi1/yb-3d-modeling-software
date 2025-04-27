@@ -9,8 +9,8 @@ export function getSceneObjectById({
   id,
   sceneObjects,
 }: {
-  id: string;
+  id: string | null;
   sceneObjects: SceneObjects;
 }) {
-  return sceneObjects.find((sceneObject) => id === sceneObject.id);
+  return id ? sceneObjects.find((sceneObject) => id === sceneObject.id) : null;
 }
