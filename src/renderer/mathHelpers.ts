@@ -26,10 +26,6 @@ function convertNormalizedCoordsToCanvasCoords(
     y: ((1 - y) / 2) * canvasSize.height, // y is flipped
   };
 
-  console.log(
-    `2D canvas position: (${canvasCoords.x.toFixed(2)}, ${canvasCoords.y.toFixed(2)})`,
-  );
-
   return canvasCoords;
 }
 
