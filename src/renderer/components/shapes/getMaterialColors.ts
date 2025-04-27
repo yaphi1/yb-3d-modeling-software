@@ -45,3 +45,23 @@ export function getSolidModeColors({
 
   return color;
 }
+
+export function getMaterialPreviewModeColors({
+  trueColor,
+  isActive,
+  isHovered,
+}: {
+  trueColor: string;
+  isActive: boolean;
+  isHovered: boolean;
+}) {
+  let color = trueColor;
+  if (isHovered) {
+    color = solidColors.hovered;
+  }
+  if (isActive) {
+    color = solidColors.active;
+  }
+
+  return color;
+}

@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { CustomMeshProps } from './shapeTypes';
 import {
+  getMaterialPreviewModeColors,
   getSolidModeColors,
   getWireframeModeColors,
 } from './getMaterialColors';
@@ -8,7 +9,7 @@ import { EditorContext, VIEWING_MODES } from '../contexts/EditorContext';
 
 export function ShapeMaterial(props: CustomMeshProps) {
   const { editorState } = useContext(EditorContext);
-  const { isActive, isHovered } = props;
+  const { isActive, isHovered, color, metalness, roughness } = props;
 
   const isWireframe = editorState.viewingMode === VIEWING_MODES.WIREFRAME;
   const isSolid = editorState.viewingMode === VIEWING_MODES.SOLID;
@@ -30,11 +31,23 @@ export function ShapeMaterial(props: CustomMeshProps) {
       )}
       {isMaterialPreview && (
         <meshStandardMaterial
-          color={getSolidModeColors({ isActive, isHovered })}
-          metalness={0.8}
-          roughness={0.1}
+          color={getMaterialPreviewModeColors({
+            trueColor: color,
+            isActive,
+            isHovered,
+          })}
+          metalness={metalness}
+          roughness={roughness}
         />
       )}
     </>
   );
 }
+
+
+/*
+- material customization (texture, color, metalness, roughness)
+
+where will this info go?
+it will go in the scene objects
+*/

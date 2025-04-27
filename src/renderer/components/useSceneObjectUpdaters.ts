@@ -1,7 +1,7 @@
 import { useCallback, useContext } from 'react';
 import { produce } from 'immer';
-import { v4 as generateUUID } from 'uuid';
 import {
+  generateSceneObject,
   SceneObjects,
   SceneObjectsContext,
 } from './contexts/SceneObjectsContext';
@@ -15,13 +15,8 @@ export function useSceneObjectUpdaters() {
     (sceneObjectName: SHAPE_NAMES) => {
       setSceneObjects(
         produce((draft: SceneObjects) => {
-          draft.push({
-            id: generateUUID(),
-            sceneObjectName,
-            position: { x: 0, y: 0, z: 0 },
-            scale: { x: 1, y: 1, z: 1 },
-            rotation: { x: 0, y: 0, z: 0 },
-          });
+          const newObject = generateSceneObject(sceneObjectName);
+          draft.push(newObject);
         }),
       );
     },

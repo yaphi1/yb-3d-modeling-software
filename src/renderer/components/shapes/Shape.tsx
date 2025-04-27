@@ -118,6 +118,9 @@ export function Shape({ shapeProps }: { shapeProps: AllShapeProps }) {
     onPointerOut: () => setIsHovered(false),
     isHovered,
     isActive,
+    color: shapeProps.color,
+    metalness: shapeProps.metalness,
+    roughness: shapeProps.roughness,
   };
 
   const shapeComponentList: Record<SHAPE_NAMES, JSX.Element> = {

@@ -24,13 +24,22 @@ export type BaseShapeProps = {
   position: XYZ;
   scale: XYZ;
   rotation: XYZ;
+  metalness: number;
+  roughness: number;
+  color: string;
 };
 
-export type SphereProps = BaseShapeProps & {};
+export type SphereProps = BaseShapeProps & {
+  widthSegments?: number;
+  heightSegments?: number;
+};
 
 export type AllShapeProps = BaseShapeProps | SphereProps;
 
 export type CustomMeshProps = ThreeElements['mesh'] & {
   isHovered: boolean;
   isActive: boolean;
+  color: string;
+  metalness: number;
+  roughness: number;
 };
