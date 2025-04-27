@@ -1,8 +1,15 @@
 import * as THREE from 'three';
 import { Grid, Line } from '@react-three/drei';
+import { useContext } from 'react';
+import { EditorContext, VIEWING_MODES } from './contexts/EditorContext';
 
 export function EditorGrid() {
-  return (
+  const { editorState } = useContext(EditorContext);
+
+  const isMaterialPreview =
+      editorState.viewingMode === VIEWING_MODES.MATERIAL_PREVIEW;
+
+  return !isMaterialPreview && (
     <>
       <Grid
         infiniteGrid
