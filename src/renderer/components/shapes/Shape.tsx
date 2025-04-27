@@ -19,49 +19,24 @@ import {
 } from '../contexts/SceneObjectsContext';
 import { getSceneObjectById, xyzToArray } from '../../helpers';
 import { useEditorStateHelpers } from '../../useEditorStateHelpers';
+import { useObjectMove } from '../controls/useObjectMove';
 
 export function Shape({ shapeProps }: { shapeProps: AllShapeProps }) {
   const [isHovered, setIsHovered] = useState(false);
   const { selectShapeById } = useSelectionHelpers();
+  const { listenForObjectMove } = useObjectMove();
   const { editorState, editorRefs } = useContext(EditorContext);
   const { setSceneObjects } = useContext(SceneObjectsContext);
-  const { sceneObjects } = useContext(SceneObjectsContext);
-  const { isPressedG, isPressedEsc, isPressedEnter } = useEditorControls();
-  const { setEditingStateToDefault, setEditingStateToMove } =
-    useEditorStateHelpers();
+  const { isPressedEsc, isPressedEnter } = useEditorControls();
+  const { setEditingStateToDefault } = useEditorStateHelpers();
 
   const isActive = useMemo(() => {
     return editorState.selectedObjectId === shapeProps.id;
   }, [editorState.selectedObjectId, shapeProps.id]);
 
   useEffect(() => {
-    const isNotAlreadyMovingObject =
-      editorState.editingState !== EDITING_STATES.MOVE;
-
-    const shouldMoveObject = isActive && isPressedG && isNotAlreadyMovingObject;
-
-    if (shouldMoveObject) {
-      const sceneObject = getSceneObjectById({
-        id: editorState.selectedObjectId!,
-        sceneObjects,
-      })!;
-
-      editorRefs.objectPositionSnapshot.current = { ...sceneObject.position };
-      editorRefs.mousePositionSnapshot.current = {
-        ...(editorRefs.mousePosition.current ?? { x: 0, y: 0 }),
-      };
-
-      setEditingStateToMove();
-    }
-  }, [
-    isActive,
-    isPressedG,
-    editorRefs,
-    editorState.editingState,
-    editorState.selectedObjectId,
-    sceneObjects,
-    setEditingStateToMove,
-  ]);
+    listenForObjectMove(isActive);
+  }, [listenForObjectMove, isActive]);
 
   const handleShapeClick = useCallback(() => {
     selectShapeById(shapeProps.id);
@@ -82,15 +57,22 @@ export function Shape({ shapeProps }: { shapeProps: AllShapeProps }) {
           sceneObjects: draft,
         })!;
 
-        // TODO: Do this for rotation and scale too
         const startPosition = editorRefs.objectPositionSnapshot!.current!;
+        const startScale = editorRefs.objectScaleSnapshot!.current!;
+        const startRotation = editorRefs.objectRotationSnapshot!.current!;
 
-        selectedObject.position = { ...startPosition };
+        selectedObject.position = {
+          ...startPosition,
+          ...startScale,
+          ...startRotation,
+        };
       }),
     );
   }, [
     setSceneObjects,
     editorRefs.objectPositionSnapshot,
+    editorRefs.objectScaleSnapshot,
+    editorRefs.objectRotationSnapshot,
     editorState.selectedObjectId,
   ]);
 

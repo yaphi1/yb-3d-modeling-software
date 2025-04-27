@@ -11,6 +11,7 @@ export const EDITING_STATES = {
   DEFAULT: 'DEFAULT',
   MOVE: 'MOVE',
   SCALE: 'SCALE',
+  ROTATE: 'ROTATE',
 } as const;
 type EditingStatesType = keyof typeof EDITING_STATES;
 
@@ -36,6 +37,8 @@ export type EditorState = {
 
 export type EditorRefs = {
   objectPositionSnapshot: RefObject<XYZ | null>;
+  objectScaleSnapshot: RefObject<XYZ | null>;
+  objectRotationSnapshot: RefObject<XYZ | null>;
   mousePositionSnapshot: RefObject<XY | null>;
   mousePosition: RefObject<XY | null>;
 };
@@ -49,6 +52,8 @@ export const defaultEditorState: EditorState = {
 
 export const defaultEditorRefs: EditorRefs = {
   objectPositionSnapshot: createRef<XYZ>(),
+  objectScaleSnapshot: createRef<XYZ>(),
+  objectRotationSnapshot: createRef<XYZ>(),
   mousePositionSnapshot: createRef<XY>(),
   mousePosition: createRef<XY>(),
 };

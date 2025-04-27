@@ -4,6 +4,7 @@ import { CONTROLS_TYPE } from './EditorControls';
 export function useEditorControls() {
   const isPressedG = useKeyboardControls<CONTROLS_TYPE>((state) => state.G);
   const isPressedS = useKeyboardControls<CONTROLS_TYPE>((state) => state.S);
+  const isPressedR = useKeyboardControls<CONTROLS_TYPE>((state) => state.R);
   const isPressedX = useKeyboardControls<CONTROLS_TYPE>((state) => state.X);
   const isPressedY = useKeyboardControls<CONTROLS_TYPE>((state) => state.Y);
   const isPressedZ = useKeyboardControls<CONTROLS_TYPE>((state) => state.Z);
@@ -18,6 +19,7 @@ export function useEditorControls() {
   return {
     isPressedG,
     isPressedS,
+    isPressedR,
     isPressedX,
     isPressedY,
     isPressedZ,
