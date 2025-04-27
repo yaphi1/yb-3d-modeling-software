@@ -25,12 +25,6 @@ export type AxesType = keyof typeof AXES;
 
 export type EditorState = {
   selectedObjectId: string | null;
-  /**
-   * Since all these 3d objects are all in one canvas,
-   * normal event methods don't work.
-   * That's why we need to handle propagation manually.
-   */
-  shouldStopPropagation: boolean;
   editingState: EditingStatesType;
   chosenAxis: AxesType;
 };
@@ -45,7 +39,6 @@ export type EditorRefs = {
 
 export const defaultEditorState: EditorState = {
   selectedObjectId: null,
-  shouldStopPropagation: false,
   editingState: EDITING_STATES.DEFAULT,
   chosenAxis: AXES.DEFAULT,
 };

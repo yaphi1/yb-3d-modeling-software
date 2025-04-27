@@ -32,7 +32,7 @@ export function useEditorStateHelpers() {
       }),
     );
   }, [setEditorState]);
-  
+
   const setEditingStateToScale = useCallback(() => {
     setEditorState(
       produce((draft: EditorState) => {
@@ -40,7 +40,7 @@ export function useEditorStateHelpers() {
       }),
     );
   }, [setEditorState]);
-  
+
   const setEditingStateToRotate = useCallback(() => {
     setEditorState(
       produce((draft: EditorState) => {

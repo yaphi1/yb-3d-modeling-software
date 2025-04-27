@@ -7,6 +7,7 @@ import {
   useState,
 } from 'react';
 import { produce } from 'immer';
+import { ThreeEvent } from '@react-three/fiber';
 import { Cube } from './Cube';
 import { AllShapeProps, SHAPE_NAMES, SHAPE_TYPES } from './shapeTypes';
 import { Sphere } from './Sphere';
@@ -39,15 +40,19 @@ export function Shape({ shapeProps }: { shapeProps: AllShapeProps }) {
   useEffect(() => {
     listenForObjectMove(isActive);
   }, [listenForObjectMove, isActive]);
-  
+
   useEffect(() => {
     listenForObjectScale(isActive);
   }, [listenForObjectScale, isActive]);
 
-  const handleShapeClick = useCallback(() => {
-    selectShapeById(shapeProps.id);
-    setEditingStateToDefault({ keepSelection: true });
-  }, [selectShapeById, shapeProps.id, setEditingStateToDefault]);
+  const handleShapeClick = useCallback(
+    (event: ThreeEvent<PointerEvent>) => {
+      event.stopPropagation();
+      selectShapeById(shapeProps.id);
+      setEditingStateToDefault({ keepSelection: true });
+    },
+    [selectShapeById, shapeProps.id, setEditingStateToDefault],
+  );
 
   useEffect(() => {
     if (isPressedEnter) {
@@ -66,9 +71,11 @@ export function Shape({ shapeProps }: { shapeProps: AllShapeProps }) {
         const zeroes = { x: 0, y: 0, z: 0 };
         const ones = { x: 1, y: 1, z: 1 };
 
-        const startingPosition = editorRefs.objectPositionSnapshot.current ?? zeroes;
+        const startingPosition =
+          editorRefs.objectPositionSnapshot.current ?? zeroes;
         const startingScale = editorRefs.objectScaleSnapshot.current ?? ones;
-        const startingRotation = editorRefs.objectRotationSnapshot.current ?? zeroes;
+        const startingRotation =
+          editorRefs.objectRotationSnapshot.current ?? zeroes;
 
         selectedObject.position = { ...startingPosition };
         selectedObject.scale = { ...startingScale };
@@ -104,7 +111,10 @@ export function Shape({ shapeProps }: { shapeProps: AllShapeProps }) {
     position: xyzToArray(shapeProps.position),
     scale: xyzToArray(shapeProps.scale),
     onClick: handleShapeClick,
-    onPointerOver: () => setIsHovered(true),
+    onPointerOver: (event: ThreeEvent<PointerEvent>) => {
+      event.stopPropagation();
+      setIsHovered(true);
+    },
     onPointerOut: () => setIsHovered(false),
     isHovered,
     isActive,

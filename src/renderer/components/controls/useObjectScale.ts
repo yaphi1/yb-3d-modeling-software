@@ -49,8 +49,10 @@ export function useObjectScale() {
   );
 
   const scaleObject = useCallback(() => {
-    const mouseStart =
-      editorRefs.mousePositionSnapshot?.current ?? { x: 0, y: 0 };
+    const mouseStart = editorRefs.mousePositionSnapshot?.current ?? {
+      x: 0,
+      y: 0,
+    };
     const mouseEnd = editorRefs.mousePosition.current!;
     const mouseDistance = getDistance2d(mouseStart, mouseEnd);
 
@@ -63,7 +65,6 @@ export function useObjectScale() {
           sceneObjects: draft,
         })!;
 
-
         /* 
         - get 2D screen xy of object's 3D position. That's the origin.
         - Get the mouse's distance from origin
@@ -71,10 +72,11 @@ export function useObjectScale() {
         - if distFromOrigin >= distFromStart, scale up
         - else scale down
         */
-        const origin = { x: 0, y: 0 }; // wait actually we need the screen xy coords of the object's position
+        // const origin = { x: 0, y: 0 }; // wait actually we need the screen xy coords of the object's position
         const unscaled = { x: 1, y: 1, z: 1 };
 
-        const startingScale = editorRefs.objectScaleSnapshot.current ?? unscaled;
+        const startingScale =
+          editorRefs.objectScaleSnapshot.current ?? unscaled;
         const amountToScale = mouseDistance * 0.01;
 
         if (chosenAxis === AXES.DEFAULT) {

@@ -8,20 +8,28 @@ import { useSelectionHelpers } from '../useSelectionHelpers';
 import { useMouseMoveHandler } from './controls/useMouseMoveHandler';
 import { EDITING_STATES, EditorContext } from './contexts/EditorContext';
 import { Axes } from './Axes';
+import { useEditorStateHelpers } from '../useEditorStateHelpers';
 
 export function MainView() {
   const { deselectAll } = useSelectionHelpers();
   const { onMouseMove } = useMouseMoveHandler();
   const { editorState } = useContext(EditorContext);
+  const { setEditingStateToDefault } = useEditorStateHelpers();
 
   const isMoving = editorState.editingState === EDITING_STATES.MOVE;
 
   return (
     <Canvas
-      onClick={deselectAll}
       onMouseMove={onMouseMove}
       style={{
         cursor: isMoving ? 'move' : 'auto',
+      }}
+      onPointerMissed={() => {
+        if (editorState.editingState === EDITING_STATES.DEFAULT) {
+          deselectAll();
+        } else {
+          setEditingStateToDefault({ keepSelection: true });
+        }
       }}
     >
       <Lighting />

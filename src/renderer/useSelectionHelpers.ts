@@ -7,7 +7,7 @@ import {
 import { useEditorStateHelpers } from './useEditorStateHelpers';
 
 export function useSelectionHelpers() {
-  const { editorState, setEditorState } = useContext(EditorContext);
+  const { setEditorState } = useContext(EditorContext);
   const { setEditingStateToDefault } = useEditorStateHelpers();
 
   const selectShapeById = useCallback(
@@ -15,7 +15,6 @@ export function useSelectionHelpers() {
       setEditorState(
         produce((draft: EditorState) => {
           draft.selectedObjectId = id;
-          draft.shouldStopPropagation = true;
         }),
       );
     },
@@ -23,22 +22,8 @@ export function useSelectionHelpers() {
   );
 
   const deselectAll = useCallback(() => {
-    const isClickOutsideObjects = !editorState.shouldStopPropagation;
-
-    if (isClickOutsideObjects) {
-      setEditingStateToDefault({ keepSelection: false });
-    }
-
-    setEditorState(
-      produce((draft: EditorState) => {
-        draft.shouldStopPropagation = false;
-      }),
-    );
-  }, [
-    setEditorState,
-    editorState.shouldStopPropagation,
-    setEditingStateToDefault,
-  ]);
+    setEditingStateToDefault({ keepSelection: false });
+  }, [setEditingStateToDefault]);
 
   return {
     selectShapeById,
