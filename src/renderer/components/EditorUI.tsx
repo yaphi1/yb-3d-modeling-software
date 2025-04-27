@@ -1,8 +1,14 @@
+import { useEditorStateHelpers } from '../useEditorStateHelpers';
 import { SHAPE_TYPES } from './shapes/shapeTypes';
 import { useSceneObjectUpdaters } from './useSceneObjectUpdaters';
 
 export function EditorUI() {
   const { addSceneObject } = useSceneObjectUpdaters();
+  const {
+    setViewingModeToWireframe,
+    setViewingModeToSolid,
+    setViewingModeToMaterialPreview,
+  } = useEditorStateHelpers();
 
   return (
     <div
@@ -30,6 +36,15 @@ export function EditorUI() {
         }}
       >
         Add Sphere
+      </button>
+      <button type="button" onClick={setViewingModeToWireframe}>
+        Wireframe
+      </button>
+      <button type="button" onClick={setViewingModeToSolid}>
+        Solid
+      </button>
+      <button type="button" onClick={setViewingModeToMaterialPreview}>
+        Material Preview
       </button>
     </div>
   );

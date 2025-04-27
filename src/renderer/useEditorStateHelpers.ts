@@ -5,6 +5,7 @@ import {
   EDITING_STATES,
   EditorContext,
   EditorState,
+  VIEWING_MODES,
 } from './components/contexts/EditorContext';
 
 export function useEditorStateHelpers() {
@@ -49,10 +50,37 @@ export function useEditorStateHelpers() {
     );
   }, [setEditorState]);
 
+  const setViewingModeToWireframe = useCallback(() => {
+    setEditorState(
+      produce((draft: EditorState) => {
+        draft.viewingMode = VIEWING_MODES.WIREFRAME;
+      }),
+    );
+  }, [setEditorState]);
+
+  const setViewingModeToSolid = useCallback(() => {
+    setEditorState(
+      produce((draft: EditorState) => {
+        draft.viewingMode = VIEWING_MODES.SOLID;
+      }),
+    );
+  }, [setEditorState]);
+
+  const setViewingModeToMaterialPreview = useCallback(() => {
+    setEditorState(
+      produce((draft: EditorState) => {
+        draft.viewingMode = VIEWING_MODES.MATERIAL_PREVIEW;
+      }),
+    );
+  }, [setEditorState]);
+
   return {
     setEditingStateToDefault,
     setEditingStateToMove,
     setEditingStateToScale,
     setEditingStateToRotate,
+    setViewingModeToWireframe,
+    setViewingModeToSolid,
+    setViewingModeToMaterialPreview,
   };
 }

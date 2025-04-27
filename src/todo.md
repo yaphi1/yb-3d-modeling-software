@@ -1,9 +1,9 @@
 # TODO
 
-- rotate shape
-- view modes (wireframe, solid, textures)
+- material customization (texture, color, metalness, roughness)
 - copy/paste
 - undo/redo
-- make move/scale/rotate damping vary with camera zoom
+- make move damping vary with camera zoom
 - refine movement to work with camera angles
   - (e.g. if you're looking at it from the other side, movement should be reversed)
+- rotate shape

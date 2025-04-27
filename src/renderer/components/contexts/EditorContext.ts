@@ -13,7 +13,14 @@ export const EDITING_STATES = {
   SCALE: 'SCALE',
   ROTATE: 'ROTATE',
 } as const;
-type EditingStatesType = keyof typeof EDITING_STATES;
+export type EditingStatesType = keyof typeof EDITING_STATES;
+
+export const VIEWING_MODES = {
+  WIREFRAME: 'WIREFRAME',
+  SOLID: 'SOLID',
+  MATERIAL_PREVIEW: 'MATERIAL_PREVIEW',
+} as const;
+export type ViewingModesType = keyof typeof VIEWING_MODES;
 
 export const AXES = {
   DEFAULT: 'DEFAULT',
@@ -26,6 +33,7 @@ export type AxesType = keyof typeof AXES;
 export type EditorState = {
   selectedObjectId: string | null;
   editingState: EditingStatesType;
+  viewingMode: ViewingModesType;
   chosenAxis: AxesType;
 };
 
@@ -41,6 +49,7 @@ export type EditorRefs = {
 export const defaultEditorState: EditorState = {
   selectedObjectId: null,
   editingState: EDITING_STATES.DEFAULT,
+  viewingMode: VIEWING_MODES.SOLID,
   chosenAxis: AXES.DEFAULT,
 };
 

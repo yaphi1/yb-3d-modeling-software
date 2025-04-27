@@ -57,7 +57,8 @@ export function Axes() {
     editorState.editingState === EDITING_STATES.MOVE ||
     editorState.editingState === EDITING_STATES.ROTATE;
 
-  const isModifyingOnDefaultZ = isModifyingObject && isDefaultAxis && isDefaultZ;
+  const isModifyingOnDefaultZ =
+    isModifyingObject && isDefaultAxis && isDefaultZ;
 
   const shouldShowX = editorState.chosenAxis === AXES.x;
   const shouldShowY = editorState.chosenAxis === AXES.y;
