@@ -13,10 +13,12 @@ import {
   SceneObjectsContext,
 } from './components/contexts/SceneObjectsContext';
 import { AllShapeProps } from './components/shapes/shapeTypes';
+import { EditorUI } from './components/EditorUI';
 
 export default function App() {
   const [editorState, setEditorState] =
     useState<EditorState>(defaultEditorState);
+
   const [sceneObjects, setSceneObjects] =
     useState<Array<AllShapeProps>>(defaultSceneObjects);
 
@@ -40,6 +42,7 @@ export default function App() {
             <MainView />
           </div>
         </EditorControls>
+        <EditorUI />
       </SceneObjectsContext>
     </EditorContext.Provider>
   );
