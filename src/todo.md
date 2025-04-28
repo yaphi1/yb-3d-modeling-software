@@ -1,6 +1,6 @@
 # TODO
 
-- material customization (texture, color, metalness, roughness)
+- textures
 - copy/paste
 - undo/redo
 - make move damping vary with camera zoom

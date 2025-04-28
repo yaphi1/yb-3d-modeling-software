@@ -44,60 +44,64 @@ export function MaterialEditor() {
 
   return (
     activeObject && (
-      <div
-        style={{
-          position: 'fixed',
-          right: 0,
-          bottom: 0,
-          padding: '10px',
-          backgroundColor: '#333',
-          color: '#fff',
-        }}
-      >
+      <div className="sidebarPanel">
         <div>
-          Color:{' '}
-          <input
-            type="color"
-            value={activeObject.color}
-            onChange={(e) => {
-              changeColor(e.target.value);
-            }}
-            onKeyDown={(e) => {
-              e.stopPropagation();
-            }}
-          />
+          Surface
         </div>
-        <div>
-          Metalness:{' '}
-          <input
-            type="number"
-            value={activeObject.metalness}
-            min={0}
-            max={1}
-            step={0.1}
-            onChange={(e) => {
-              changeMetalness(parseFloat(e.target.value));
-            }}
-            onKeyDown={(e) => {
-              e.stopPropagation();
-            }}
-          />
-        </div>
-        <div>
-          Roughness:{' '}
-          <input
-            type="number"
-            value={activeObject.roughness}
-            min={0}
-            max={1}
-            step={0.1}
-            onChange={(e) => {
-              changeRoughness(parseFloat(e.target.value));
-            }}
-            onKeyDown={(e) => {
-              e.stopPropagation();
-            }}
-          />
+        <div className="propertyInputs">
+          <label className="propertyInput">
+            <span>Base Color</span>
+            <input
+              type="color"
+              value={activeObject.color}
+              onChange={(e) => {
+                changeColor(e.target.value);
+              }}
+              onKeyDown={(e) => {
+                e.stopPropagation();
+              }}
+            />
+            <span
+              className="inputValue"
+              style={{
+                backgroundColor: activeObject.color,
+              }}
+            ></span>
+          </label>
+          <label className="propertyInput">
+            <span>Metallic</span>
+            <input
+              className="inputValue"
+              type="number"
+              value={activeObject.metalness}
+              min={0}
+              max={1}
+              step={0.1}
+              onChange={(e) => {
+                changeMetalness(parseFloat(e.target.value));
+              }}
+              onKeyDown={(e) => {
+                e.stopPropagation();
+              }}
+            />
+          </label>
+          <label className="propertyInput">
+            <span>Roughness</span>
+            <input
+              className="inputValue"
+              type="number"
+              value={activeObject.roughness}
+              min={0}
+              max={1}
+              step={0.1}
+              onChange={(e) => {
+                changeRoughness(parseFloat(e.target.value));
+              }}
+              onKeyDown={(e) => {
+                e.stopPropagation();
+              }}
+            />
+          </label>
         </div>
       </div>
     )

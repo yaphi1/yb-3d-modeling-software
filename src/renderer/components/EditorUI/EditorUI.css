@@ -1,0 +1,74 @@
+.EditorUI,
+.EditorUI button,
+.EditorUI input
+{
+  font-size: 12px;
+}
+
+.EditorUI button {
+  background-color: #222;
+  color: #ccc;
+  border: none;
+  border-radius: 2px;
+  padding: 4px 8px;
+}
+.EditorUI button:hover {
+  background-color: #444;
+}
+
+.TopBar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  padding: 4px;
+  background-color: #333;
+  display: flex;
+  justify-content: space-between;
+}
+
+.TopBar__Group {
+  display: flex;
+  gap: 4px;
+}
+
+.sidebarPanel {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  padding: 12px;
+  background-color: #333;
+  border-radius: 5px;
+}
+
+.propertyInputs {
+  padding-left: 10px;
+  padding-top: 6px;
+}
+
+.propertyInput {
+  position: relative;
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 5px;
+}
+
+input[type="color"] {
+  pointer-events: none;
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  opacity: 0;
+}
+
+.inputValue {
+  width: 90px;
+  height: 18px;
+  background-color: #555;
+  border-radius: 2px;
+  color: #ccc;
+  border: none;
+  padding: 0px 4px;
+}
