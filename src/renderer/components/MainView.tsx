@@ -36,7 +36,7 @@ export function MainView() {
       <SceneObjects />
       <EditorGrid />
       <Axes />
-      <OrbitControls />
+      <OrbitControls makeDefault />
     </Canvas>
   );
 }

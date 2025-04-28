@@ -1,4 +1,4 @@
-import { Line } from '@react-three/drei';
+import { GizmoHelper, GizmoViewport, Line } from '@react-three/drei';
 import { useCallback, useContext, useEffect } from 'react';
 import { produce } from 'immer';
 import { useEditorControls } from './controls/useEditorControls';
@@ -8,6 +8,7 @@ import {
   EDITING_STATES,
   EditorContext,
   EditorState,
+  VIEWING_MODES,
 } from './contexts/EditorContext';
 
 export function Axes() {
@@ -71,6 +72,9 @@ export function Axes() {
     z: 0,
   };
 
+  const shouldShowGizmo =
+    editorState.viewingMode !== VIEWING_MODES.MATERIAL_PREVIEW;
+
   return (
     <>
       {shouldShowX && (
@@ -102,6 +106,18 @@ export function Axes() {
           color="#87a259"
           lineWidth={3}
         />
+      )}
+      {shouldShowGizmo && (
+        <GizmoHelper
+          alignment="top-right"
+          margin={[60, 100]} // (x, y)
+        >
+          <GizmoViewport
+            axisColors={['#E34957', '#7AA038', '#4780DA']}
+            labelColor="black"
+            axisHeadScale={0.9}
+          />
+        </GizmoHelper>
       )}
     </>
   );
