@@ -45,9 +45,7 @@ export function MaterialEditor() {
   return (
     activeObject && (
       <div className="sidebarPanel">
-        <div>
-          Surface
-        </div>
+        <div>Surface</div>
         <div className="propertyInputs">
           <label className="propertyInput">
             <span>Base Color</span>
@@ -66,7 +64,7 @@ export function MaterialEditor() {
               style={{
                 backgroundColor: activeObject.color,
               }}
-            ></span>
+            />
           </label>
           <label className="propertyInput">
             <span>Metallic</span>

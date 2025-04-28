@@ -5,17 +5,17 @@ import {
   SceneObjects,
   SceneObjectsContext,
 } from './contexts/SceneObjectsContext';
-import { AllShapeProps, SHAPE_NAMES } from './shapes/shapeTypes';
+import { AllShapeProps, SHAPE_TYPE_NAMES } from './shapes/shapeTypes';
 import { EditorRefs } from './contexts/EditorContext';
 
 export function useSceneObjectUpdaters() {
   const { setSceneObjects } = useContext(SceneObjectsContext);
 
   const addSceneObject = useCallback(
-    (sceneObjectName: SHAPE_NAMES) => {
+    (sceneObjectType: SHAPE_TYPE_NAMES) => {
       setSceneObjects(
         produce((draft: SceneObjects) => {
-          const newObject = generateSceneObject(sceneObjectName);
+          const newObject = generateSceneObject(sceneObjectType);
           draft.push(newObject);
         }),
       );

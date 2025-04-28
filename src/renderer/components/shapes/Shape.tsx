@@ -9,7 +9,7 @@ import {
 import { produce } from 'immer';
 import { ThreeEvent } from '@react-three/fiber';
 import { Cube } from './Cube';
-import { AllShapeProps, SHAPE_NAMES, SHAPE_TYPES } from './shapeTypes';
+import { AllShapeProps, SHAPE_TYPE_NAMES, SHAPE_TYPES } from './shapeTypes';
 import { Sphere } from './Sphere';
 import { useSelectionHelpers } from '../../useSelectionHelpers';
 import { EDITING_STATES, EditorContext } from '../contexts/EditorContext';
@@ -120,11 +120,11 @@ export function Shape({ shapeProps }: { shapeProps: AllShapeProps }) {
     roughness: shapeProps.roughness,
   };
 
-  const shapeComponentList: Record<SHAPE_NAMES, JSX.Element> = {
+  const shapeComponentList: Record<SHAPE_TYPE_NAMES, JSX.Element> = {
     [SHAPE_TYPES.CUBE]: <Cube {...commonProps} />,
     [SHAPE_TYPES.SPHERE]: <Sphere {...commonProps} />,
   };
-  const chosenShape = shapeComponentList[shapeProps.sceneObjectName];
+  const chosenShape = shapeComponentList[shapeProps.sceneObjectType];
 
   return chosenShape;
 }

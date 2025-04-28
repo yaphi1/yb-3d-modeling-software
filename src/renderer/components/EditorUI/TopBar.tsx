@@ -12,7 +12,6 @@ export function TopBar() {
 
   return (
     <div className="TopBar">
-
       <div className="TopBar__Group">
         <button
           type="button"

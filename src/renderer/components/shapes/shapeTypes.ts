@@ -5,7 +5,7 @@ export const SHAPE_TYPES = {
   SPHERE: 'SPHERE',
 } as const;
 
-export type SHAPE_NAMES = keyof typeof SHAPE_TYPES;
+export type SHAPE_TYPE_NAMES = keyof typeof SHAPE_TYPES;
 
 export type XYZ = {
   x: number;
@@ -20,7 +20,8 @@ export type XY = {
 
 export type BaseShapeProps = {
   id: string;
-  sceneObjectName: SHAPE_NAMES;
+  sceneObjectType: SHAPE_TYPE_NAMES;
+  sceneObjectName: string;
   position: XYZ;
   scale: XYZ;
   rotation: XYZ;

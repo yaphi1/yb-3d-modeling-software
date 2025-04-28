@@ -1,13 +1,30 @@
 import { createContext, Dispatch, SetStateAction } from 'react';
 import { v4 as generateUUID } from 'uuid';
-import { AllShapeProps, SHAPE_NAMES, SHAPE_TYPES } from '../shapes/shapeTypes';
+import {
+  AllShapeProps,
+  SHAPE_TYPE_NAMES,
+  SHAPE_TYPES,
+} from '../shapes/shapeTypes';
 
 export type SceneObjects = Array<AllShapeProps>;
 
-export function generateSceneObject(sceneObjectName: SHAPE_NAMES) {
+let sceneObjectNumber = 0;
+
+function generateSceneObjectName(sceneObjectType: SHAPE_TYPE_NAMES) {
+  const firstLetterCapitalized =
+    sceneObjectType[0] + sceneObjectType.slice(1).toLowerCase();
+  sceneObjectNumber += 1;
+  const numberWithLeadingZeroes = sceneObjectNumber.toString().padStart(3, '0');
+  const name = `${firstLetterCapitalized}_${numberWithLeadingZeroes}`;
+
+  return name;
+}
+
+export function generateSceneObject(sceneObjectType: SHAPE_TYPE_NAMES) {
   return {
     id: generateUUID(),
-    sceneObjectName,
+    sceneObjectType,
+    sceneObjectName: generateSceneObjectName(sceneObjectType),
     position: { x: 0, y: 0, z: 0 },
     scale: { x: 1, y: 1, z: 1 },
     rotation: { x: 0, y: 0, z: 0 },

@@ -18,6 +18,7 @@ module.exports = {
     'no-unused-vars': 'off',
     'no-nested-ternary': 'off',
     '@typescript-eslint/no-unused-vars': 'error',
+    'jsx-a11y/label-has-associated-control': 'off', // doesn't seem to recognize inputs nested in labels even though it says it should
   },
   parserOptions: {
     ecmaVersion: 2022,
