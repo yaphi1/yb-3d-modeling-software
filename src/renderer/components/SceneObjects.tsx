@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useCallback, useContext, useEffect, useRef } from 'react';
 import { useThree } from '@react-three/fiber';
 import { Shape } from './shapes/Shape';
 import { SceneObjectsContext } from './contexts/SceneObjectsContext';
@@ -12,12 +12,15 @@ export function SceneObjects() {
   const { sceneObjects, getActiveObject } = useContext(SceneObjectsContext);
   const { editorState, editorRefs } = useContext(EditorContext);
   const { isPressed } = useEditorControls();
-  const { deleteSceneObject } = useSceneObjectUpdaters();
+  const { deleteSceneObject, duplicateSceneObject } = useSceneObjectUpdaters();
   const { setEditingStateToDefault } = useEditorStateHelpers();
   const { selectedObjectId } = editorState;
   const { camera, size } = useThree();
+  const isDuplicating = useRef(false);
+  const { setEditingStateToMove } = useEditorStateHelpers();
+  const { storeSnapshotOfObjectAndMouse } = useSceneObjectUpdaters();
 
-  useEffect(() => {
+  const track2DPositionOfActive3DObject = useCallback(() => {
     const selectedObject = getActiveObject();
     if (!selectedObject) {
       return;
@@ -32,7 +35,9 @@ export function SceneObjects() {
     editorRefs.objectCoordsIn2DViewport.current = coordsIn2D;
   }, [editorRefs.objectCoordsIn2DViewport, getActiveObject, camera, size]);
 
-  useEffect(() => {
+  useEffect(track2DPositionOfActive3DObject, [track2DPositionOfActive3DObject]);
+
+  const listenForDelete = useCallback(() => {
     const shouldDelete = isPressed.DELETE && selectedObjectId;
     if (shouldDelete) {
       const idToDelete = selectedObjectId;
@@ -45,6 +50,40 @@ export function SceneObjects() {
     setEditingStateToDefault,
     deleteSceneObject,
   ]);
+
+  useEffect(listenForDelete, [listenForDelete]);
+
+  const listenForDuplicate = useCallback(() => {
+    const activeObject = getActiveObject();
+
+    // todo: Figure out why D press doesn't register if shift is held
+    // const isKeyComboPressed = isPressed.D && isPressed.SHIFT;
+    const isKeyComboPressed = isPressed.D;
+
+    const shouldDuplicate =
+      !isDuplicating.current && isKeyComboPressed && activeObject;
+
+    if (shouldDuplicate) {
+      isDuplicating.current = true;
+      duplicateSceneObject(activeObject);
+
+      storeSnapshotOfObjectAndMouse({ editorRefs, sceneObject: activeObject });
+      setEditingStateToMove();
+    }
+
+    if (!isKeyComboPressed) {
+      isDuplicating.current = false;
+    }
+  }, [
+    isPressed.D,
+    getActiveObject,
+    duplicateSceneObject,
+    editorRefs,
+    setEditingStateToMove,
+    storeSnapshotOfObjectAndMouse,
+  ]);
+
+  useEffect(listenForDuplicate, [listenForDuplicate]);
 
   return (
     <>

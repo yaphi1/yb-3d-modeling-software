@@ -1,8 +1,7 @@
 # TODO
 
-- duplicate
-- undo/redo
 - textures
+- undo/redo
 - save/load
 - make move damping vary with camera zoom
 - refine movement to work with camera angles

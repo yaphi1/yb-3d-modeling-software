@@ -1,5 +1,6 @@
 import { useCallback, useMemo, useState } from 'react';
 import './App.css';
+import { KeyboardControls } from '@react-three/drei';
 import { MainView } from './components/MainView';
 import {
   defaultEditorState,
@@ -13,7 +14,6 @@ import {
 } from './components/contexts/SceneObjectsContext';
 import { AllShapeProps } from './components/shapes/shapeTypes';
 import { EditorUI } from './components/EditorUI/EditorUI';
-import { KeyboardControls } from '@react-three/drei';
 import { keyMap } from './components/controls/useEditorControls';
 
 export default function App() {

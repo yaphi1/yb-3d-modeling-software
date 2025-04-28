@@ -40,9 +40,7 @@ export function generateDuplicateObject(sceneObject: AllShapeProps) {
   const duplicatedObject: AllShapeProps = {
     ...sceneObject,
     id: generateUUID(),
-    sceneObjectName: generateSceneObjectName(
-      sceneObject.sceneObjectType
-    ),
+    sceneObjectName: generateSceneObjectName(sceneObject.sceneObjectType),
   };
 
   return duplicatedObject;
