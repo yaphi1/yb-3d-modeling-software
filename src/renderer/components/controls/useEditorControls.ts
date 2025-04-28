@@ -11,12 +11,13 @@ export const CONTROLS = {
   ESC: 'ESC',
   ENTER: 'ENTER',
   DELETE: 'DELETE',
+  SHIFT: 'SHIFT',
 } as const;
 
 export type CONTROLS_TYPE = keyof typeof CONTROLS;
 
 export const keyMap: KeyboardControlsEntry<CONTROLS_TYPE>[] = [
-  { name: CONTROLS.G, keys: ['g'] },
+  { name: CONTROLS.G, keys: ['g', 'm'] },
   { name: CONTROLS.S, keys: ['s'] },
   { name: CONTROLS.R, keys: ['r'] },
   { name: CONTROLS.D, keys: ['d'] },
@@ -26,15 +27,25 @@ export const keyMap: KeyboardControlsEntry<CONTROLS_TYPE>[] = [
   { name: CONTROLS.ESC, keys: ['Escape'] },
   { name: CONTROLS.ENTER, keys: ['Enter'] },
   { name: CONTROLS.DELETE, keys: ['Backspace'] },
+  { name: CONTROLS.SHIFT, keys: ['Shift'] },
 ];
 
 export function useEditorControls() {
-  const isPressed: Partial<Record<CONTROLS_TYPE, boolean>> = {};
-
-  Object.keys(CONTROLS).forEach(control => {
-    const key = control as CONTROLS_TYPE;
-    isPressed[key] = useKeyboardControls<CONTROLS_TYPE>((state) => state[key]);
-  });
+  // isPressed is all written out because React hooks shouldn't be used in a loop
+  // Reference: https://react.dev/warnings/invalid-hook-call-warning
+  const isPressed: Record<CONTROLS_TYPE, boolean> = {
+    G: useKeyboardControls<CONTROLS_TYPE>((state) => state.G),
+    S: useKeyboardControls<CONTROLS_TYPE>((state) => state.S),
+    R: useKeyboardControls<CONTROLS_TYPE>((state) => state.R),
+    D: useKeyboardControls<CONTROLS_TYPE>((state) => state.D),
+    X: useKeyboardControls<CONTROLS_TYPE>((state) => state.X),
+    Y: useKeyboardControls<CONTROLS_TYPE>((state) => state.Y),
+    Z: useKeyboardControls<CONTROLS_TYPE>((state) => state.Z),
+    ESC: useKeyboardControls<CONTROLS_TYPE>((state) => state.ESC),
+    ENTER: useKeyboardControls<CONTROLS_TYPE>((state) => state.ENTER),
+    DELETE: useKeyboardControls<CONTROLS_TYPE>((state) => state.DELETE),
+    SHIFT: useKeyboardControls<CONTROLS_TYPE>((state) => state.SHIFT),
+  };
 
   return { isPressed };
 }
