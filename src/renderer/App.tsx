@@ -13,8 +13,8 @@ import {
 } from './components/contexts/SceneObjectsContext';
 import { AllShapeProps } from './components/shapes/shapeTypes';
 import { EditorUI } from './components/EditorUI/EditorUI';
-import { keyMap } from './components/controls/controlKeys';
 import { KeyboardControls } from '@react-three/drei';
+import { keyMap } from './components/controls/useEditorControls';
 
 export default function App() {
   const [editorState, setEditorState] =
