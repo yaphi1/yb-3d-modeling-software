@@ -6,14 +6,17 @@ export function MaterialEditor() {
   const { getActiveObject, setSceneObjects } = useContext(SceneObjectsContext);
   const activeObject = useMemo(getActiveObject, [getActiveObject]);
 
-  const changeColor = useCallback((color: string) => {
-    setSceneObjects(
-      produce((draft) => {
-        const activeObjectDraft = getActiveObject(draft)!;
-        activeObjectDraft.color = color;
-      }),
-    );
-  }, [setSceneObjects, getActiveObject]);
+  const changeColor = useCallback(
+    (color: string) => {
+      setSceneObjects(
+        produce((draft) => {
+          const activeObjectDraft = getActiveObject(draft)!;
+          activeObjectDraft.color = color;
+        }),
+      );
+    },
+    [setSceneObjects, getActiveObject],
+  );
 
   return (
     activeObject && (
@@ -27,7 +30,8 @@ export function MaterialEditor() {
           color: '#fff',
         }}
       >
-        Color: <input
+        Color:{' '}
+        <input
           type="color"
           value={activeObject.color}
           onChange={(e) => {

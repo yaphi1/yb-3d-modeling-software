@@ -1,15 +1,35 @@
 import { useContext } from 'react';
+import { Edges } from '@react-three/drei';
 import { CustomMeshProps } from './shapeTypes';
-import {
-  getMaterialPreviewModeColors,
-  getSolidModeColors,
-  getWireframeModeColors,
-} from './getMaterialColors';
 import { EditorContext, VIEWING_MODES } from '../contexts/EditorContext';
+
+const wireframeColor = '#ffffff';
+const solidModeColor = '#848586';
+const highlightColor = '#D28329';
+
+function Wireframe() {
+  return (
+    <Edges
+      linewidth={1}
+      threshold={1} // Display edges only when the angle between two faces exceeds this value (default=15 degrees)
+      color={wireframeColor}
+    />
+  );
+}
+
+function Highlight() {
+  return (
+    <Edges
+      linewidth={2}
+      threshold={1} // Display edges only when the angle between two faces exceeds this value (default=15 degrees)
+      color={highlightColor}
+    />
+  );
+}
 
 export function ShapeMaterial(props: CustomMeshProps) {
   const { editorState } = useContext(EditorContext);
-  const { isActive, isHovered, color, metalness, roughness } = props;
+  const { isActive, color, metalness, roughness } = props;
 
   const isWireframe = editorState.viewingMode === VIEWING_MODES.WIREFRAME;
   const isSolid = editorState.viewingMode === VIEWING_MODES.SOLID;
@@ -19,34 +39,27 @@ export function ShapeMaterial(props: CustomMeshProps) {
   return (
     <>
       {isWireframe && (
-        <meshStandardMaterial
-          color={getWireframeModeColors({ isActive, isHovered })}
-          wireframe
-        />
+        <>
+          <meshStandardMaterial transparent opacity={0} />
+          {isActive ? <Highlight /> : <Wireframe />}
+        </>
       )}
       {isSolid && (
-        <meshStandardMaterial
-          color={getSolidModeColors({ isActive, isHovered })}
-        />
+        <>
+          <meshStandardMaterial color={solidModeColor} />
+          {isActive && <Highlight />}
+        </>
       )}
       {isMaterialPreview && (
-        <meshStandardMaterial
-          color={getMaterialPreviewModeColors({
-            trueColor: color,
-            isActive,
-            isHovered,
-          })}
-          metalness={metalness}
-          roughness={roughness}
-        />
+        <>
+          <meshStandardMaterial
+            color={color}
+            metalness={metalness}
+            roughness={roughness}
+          />
+          {isActive && <Highlight />}
+        </>
       )}
     </>
   );
 }
-
-/*
-- material customization (texture, color, metalness, roughness)
-
-where will this info go?
-it will go in the scene objects
-*/
