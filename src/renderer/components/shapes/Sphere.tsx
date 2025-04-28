@@ -8,7 +8,7 @@ export function Sphere(props: CustomMeshProps) {
 
   return (
     <mesh {...props} ref={meshRef}>
-      <sphereGeometry args={[0.5, 16, 16]} />
+      <sphereGeometry args={[0.5, 32, 32]} />
       <ShapeMaterial {...props} />
     </mesh>
   );
