@@ -31,6 +31,7 @@ export function generateSceneObject(sceneObjectType: SHAPE_TYPE_NAMES) {
     metalness: 0.8,
     roughness: 0.1,
     color: '#848586',
+    textureId: 'default',
   };
 
   return sceneObject;

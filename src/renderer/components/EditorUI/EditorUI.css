@@ -1,6 +1,7 @@
 .EditorUI,
 .EditorUI button,
-.EditorUI input
+.EditorUI input,
+.EditorUI select
 {
   font-size: 12px;
 }

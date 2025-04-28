@@ -1,7 +1,9 @@
-import { useContext } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { Edges } from '@react-three/drei';
+import { Vector2 } from 'three';
 import { CustomMeshProps } from './shapeTypes';
 import { EditorContext, VIEWING_MODES } from '../contexts/EditorContext';
+import { useShapeTextures } from './useShapeTextures';
 
 const wireframeColor = '#ffffff';
 const solidModeColor = '#848586';
@@ -30,11 +32,38 @@ function Highlight() {
 export function ShapeMaterial(props: CustomMeshProps) {
   const { editorState } = useContext(EditorContext);
   const { isActive, color, metalness, roughness } = props;
+  const { getTextureById } = useShapeTextures();
+  const [isRefreshingTexture, setIsRefreshingTexture] = useState(false);
 
   const isWireframe = editorState.viewingMode === VIEWING_MODES.WIREFRAME;
   const isSolid = editorState.viewingMode === VIEWING_MODES.SOLID;
   const isMaterialPreview =
     editorState.viewingMode === VIEWING_MODES.MATERIAL_PREVIEW;
+
+  const texture = useMemo(() => {
+    return {
+      color,
+      metalness,
+      roughness,
+      normalScale: new Vector2(0.15, 0.15),
+      ...getTextureById(props.textureId),
+    };
+  }, [getTextureById, props.textureId, color, metalness, roughness]);
+
+  /**
+   * Setting this state just to force rerender.
+   * Threejs `needsUpdate` didn't work as expected.
+   */
+  const forceTextureUpdate = useCallback(() => {
+    setIsRefreshingTexture(true);
+    setTimeout(() => {
+      setIsRefreshingTexture(false);
+    }, 0);
+  }, []);
+
+  useEffect(() => {
+    forceTextureUpdate();
+  }, [props.textureId, forceTextureUpdate]);
 
   return (
     <>
@@ -50,13 +79,9 @@ export function ShapeMaterial(props: CustomMeshProps) {
           {isActive && <Highlight />}
         </>
       )}
-      {isMaterialPreview && (
+      {isMaterialPreview && !isRefreshingTexture && (
         <>
-          <meshStandardMaterial
-            color={color}
-            metalness={metalness}
-            roughness={roughness}
-          />
+          <meshStandardMaterial {...texture} />
           {isActive && <Highlight />}
         </>
       )}

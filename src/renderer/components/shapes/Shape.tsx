@@ -118,6 +118,7 @@ export function Shape({ shapeProps }: { shapeProps: AllShapeProps }) {
     color: shapeProps.color,
     metalness: shapeProps.metalness,
     roughness: shapeProps.roughness,
+    textureId: shapeProps.textureId,
   };
 
   const shapeComponentList: Record<SHAPE_TYPE_NAMES, JSX.Element> = {

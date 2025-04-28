@@ -42,6 +42,18 @@ export function MaterialEditor() {
     [setSceneObjects, getActiveObject],
   );
 
+  const changeTextureId = useCallback(
+    (newTextureId: string) => {
+      setSceneObjects(
+        produce((draft) => {
+          const activeObjectDraft = getActiveObject(draft)!;
+          activeObjectDraft.textureId = newTextureId;
+        }),
+      );
+    },
+    [setSceneObjects, getActiveObject],
+  );
+
   return (
     activeObject && (
       <div className="sidebarPanel">
@@ -99,6 +111,23 @@ export function MaterialEditor() {
                 e.stopPropagation();
               }}
             />
+          </label>
+          <label className="propertyInput">
+            <span>Texture</span>
+            <select
+              className="inputValue"
+              value={activeObject.textureId}
+              onChange={(e) => {
+                changeTextureId(e.target.value);
+              }}
+              onKeyDown={(e) => {
+                e.stopPropagation();
+              }}
+            >
+              <option value="default">Default</option>
+              {/* TODO: Rename to UI label to "Pavement" once there are more textures to choose from */}
+              <option value="pavement">Rough</option>
+            </select>
           </label>
         </div>
       </div>

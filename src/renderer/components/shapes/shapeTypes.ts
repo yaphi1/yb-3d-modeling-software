@@ -28,6 +28,7 @@ export type BaseShapeProps = {
   metalness: number;
   roughness: number;
   color: string;
+  textureId: string;
 };
 
 export type SphereProps = BaseShapeProps & {
@@ -43,4 +44,5 @@ export type CustomMeshProps = ThreeElements['mesh'] & {
   color: string;
   metalness: number;
   roughness: number;
+  textureId: string;
 };
