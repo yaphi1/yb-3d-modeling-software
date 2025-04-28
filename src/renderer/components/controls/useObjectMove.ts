@@ -12,7 +12,7 @@ import { useSceneObjectUpdaters } from '../useSceneObjectUpdaters';
 export function useObjectMove() {
   const { editorState, editorRefs } = useContext(EditorContext);
   const { getActiveObject, setSceneObjects } = useContext(SceneObjectsContext);
-  const { isPressedG } = useEditorControls();
+  const { isPressed } = useEditorControls();
   const { setEditingStateToMove } = useEditorStateHelpers();
   const { storeSnapshotOfObjectAndMouse } = useSceneObjectUpdaters();
 
@@ -22,7 +22,7 @@ export function useObjectMove() {
         editorState.editingState !== EDITING_STATES.MOVE;
 
       const shouldMoveObject =
-        isActive && isPressedG && isNotAlreadyMovingObject;
+        isActive && isPressed.G && isNotAlreadyMovingObject;
 
       if (shouldMoveObject) {
         const sceneObject = getActiveObject()!;
@@ -32,7 +32,7 @@ export function useObjectMove() {
       }
     },
     [
-      isPressedG,
+      isPressed.G,
       editorRefs,
       editorState.editingState,
       getActiveObject,

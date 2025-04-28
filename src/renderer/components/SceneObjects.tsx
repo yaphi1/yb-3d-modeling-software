@@ -11,7 +11,7 @@ import { convert3DPositionTo2DCoords } from '../mathHelpers';
 export function SceneObjects() {
   const { sceneObjects, getActiveObject } = useContext(SceneObjectsContext);
   const { editorState, editorRefs } = useContext(EditorContext);
-  const { isPressedDelete } = useEditorControls();
+  const { isPressed } = useEditorControls();
   const { deleteSceneObject } = useSceneObjectUpdaters();
   const { setEditingStateToDefault } = useEditorStateHelpers();
   const { selectedObjectId } = editorState;
@@ -33,14 +33,14 @@ export function SceneObjects() {
   }, [editorRefs.objectCoordsIn2DViewport, getActiveObject, camera, size]);
 
   useEffect(() => {
-    const shouldDelete = isPressedDelete && selectedObjectId;
+    const shouldDelete = isPressed.DELETE && selectedObjectId;
     if (shouldDelete) {
       const idToDelete = selectedObjectId;
       setEditingStateToDefault({ keepSelection: false });
       deleteSceneObject({ id: idToDelete });
     }
   }, [
-    isPressedDelete,
+    isPressed.DELETE,
     selectedObjectId,
     setEditingStateToDefault,
     deleteSceneObject,

@@ -1,30 +1,15 @@
 import { useKeyboardControls } from '@react-three/drei';
-import { CONTROLS_TYPE } from './EditorControls';
+import { CONTROLS, CONTROLS_TYPE } from './controlKeys';
 
 export function useEditorControls() {
-  const isPressedG = useKeyboardControls<CONTROLS_TYPE>((state) => state.G);
-  const isPressedS = useKeyboardControls<CONTROLS_TYPE>((state) => state.S);
-  const isPressedR = useKeyboardControls<CONTROLS_TYPE>((state) => state.R);
-  const isPressedX = useKeyboardControls<CONTROLS_TYPE>((state) => state.X);
-  const isPressedY = useKeyboardControls<CONTROLS_TYPE>((state) => state.Y);
-  const isPressedZ = useKeyboardControls<CONTROLS_TYPE>((state) => state.Z);
-  const isPressedEsc = useKeyboardControls<CONTROLS_TYPE>((state) => state.ESC);
-  const isPressedEnter = useKeyboardControls<CONTROLS_TYPE>(
-    (state) => state.ENTER,
-  );
-  const isPressedDelete = useKeyboardControls<CONTROLS_TYPE>(
-    (state) => state.DELETE,
-  );
+  const isPressed: Partial<Record<CONTROLS_TYPE, boolean>> = {};
+
+  Object.keys(CONTROLS).forEach(control => {
+    const key = control as CONTROLS_TYPE;
+    isPressed[key] = useKeyboardControls<CONTROLS_TYPE>((state) => state[key]);
+  });
 
   return {
-    isPressedG,
-    isPressedS,
-    isPressedR,
-    isPressedX,
-    isPressedY,
-    isPressedZ,
-    isPressedEsc,
-    isPressedEnter,
-    isPressedDelete,
+    isPressed
   };
 }

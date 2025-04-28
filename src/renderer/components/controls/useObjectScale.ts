@@ -13,7 +13,7 @@ import { useSceneObjectUpdaters } from '../useSceneObjectUpdaters';
 export function useObjectScale() {
   const { editorState, editorRefs } = useContext(EditorContext);
   const { setSceneObjects, getActiveObject } = useContext(SceneObjectsContext);
-  const { isPressedS } = useEditorControls();
+  const { isPressed } = useEditorControls();
   const { setEditingStateToScale } = useEditorStateHelpers();
   const { storeSnapshotOfObjectAndMouse } = useSceneObjectUpdaters();
 
@@ -23,7 +23,7 @@ export function useObjectScale() {
         editorState.editingState !== EDITING_STATES.SCALE;
 
       const shouldScaleObject =
-        isActive && isPressedS && isNotAlreadyScalingObject;
+        isActive && isPressed.S && isNotAlreadyScalingObject;
 
       if (shouldScaleObject) {
         const sceneObject = getActiveObject()!;
@@ -33,7 +33,7 @@ export function useObjectScale() {
       }
     },
     [
-      isPressedS,
+      isPressed.S,
       editorRefs,
       editorState.editingState,
       getActiveObject,

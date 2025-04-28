@@ -12,7 +12,7 @@ import {
 
 export function Axes() {
   const { editorState, editorRefs, setEditorState } = useContext(EditorContext);
-  const { isPressedX, isPressedY, isPressedZ } = useEditorControls();
+  const { isPressed } = useEditorControls();
 
   const toggleAxis = useCallback(
     (axis: AxesType) => {
@@ -28,28 +28,28 @@ export function Axes() {
   );
 
   useEffect(() => {
-    if (isPressedX) {
+    if (isPressed.X) {
       if (editorState.editingState !== EDITING_STATES.DEFAULT) {
         toggleAxis(AXES.x);
       }
     }
-  }, [isPressedX, editorState.editingState, toggleAxis]);
+  }, [isPressed.X, editorState.editingState, toggleAxis]);
 
   useEffect(() => {
-    if (isPressedY) {
+    if (isPressed.Y) {
       if (editorState.editingState !== EDITING_STATES.DEFAULT) {
         toggleAxis(AXES.y);
       }
     }
-  }, [isPressedY, editorState.editingState, toggleAxis]);
+  }, [isPressed.Y, editorState.editingState, toggleAxis]);
 
   useEffect(() => {
-    if (isPressedZ) {
+    if (isPressed.Z) {
       if (editorState.editingState !== EDITING_STATES.DEFAULT) {
         toggleAxis(AXES.z);
       }
     }
-  }, [isPressedZ, editorState.editingState, toggleAxis]);
+  }, [isPressed.Z, editorState.editingState, toggleAxis]);
 
   const isModifyingObject = editorState.editingState !== EDITING_STATES.DEFAULT;
   const isDefaultAxis = editorState.chosenAxis === AXES.DEFAULT;

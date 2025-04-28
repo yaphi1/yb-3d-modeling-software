@@ -7,13 +7,14 @@ import {
   EditorContext,
   defaultEditorRefs,
 } from './components/contexts/EditorContext';
-import { EditorControls } from './components/controls/EditorControls';
 import {
   defaultSceneObjects,
   SceneObjectsContext,
 } from './components/contexts/SceneObjectsContext';
 import { AllShapeProps } from './components/shapes/shapeTypes';
 import { EditorUI } from './components/EditorUI/EditorUI';
+import { keyMap } from './components/controls/controlKeys';
+import { KeyboardControls } from '@react-three/drei';
 
 export default function App() {
   const [editorState, setEditorState] =
@@ -52,11 +53,11 @@ export default function App() {
   return (
     <EditorContext.Provider value={EditorContextValue}>
       <SceneObjectsContext value={sceneObjectsContext}>
-        <EditorControls>
+        <KeyboardControls map={keyMap}>
           <div className="App">
             <MainView />
           </div>
-        </EditorControls>
+        </KeyboardControls>
         <EditorUI />
       </SceneObjectsContext>
     </EditorContext.Provider>

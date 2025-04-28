@@ -30,7 +30,7 @@ export function Shape({ shapeProps }: { shapeProps: AllShapeProps }) {
   const { listenForObjectScale } = useObjectScale();
   const { editorState, editorRefs } = useContext(EditorContext);
   const { setSceneObjects, getActiveObject } = useContext(SceneObjectsContext);
-  const { isPressedEsc, isPressedEnter } = useEditorControls();
+  const { isPressed } = useEditorControls();
   const { setEditingStateToDefault } = useEditorStateHelpers();
 
   const isActive = useMemo(() => {
@@ -55,10 +55,10 @@ export function Shape({ shapeProps }: { shapeProps: AllShapeProps }) {
   );
 
   useEffect(() => {
-    if (isPressedEnter) {
+    if (isPressed.ENTER) {
       setEditingStateToDefault({ keepSelection: true });
     }
-  }, [isPressedEnter, setEditingStateToDefault]);
+  }, [isPressed.ENTER, setEditingStateToDefault]);
 
   const cancelShapeUpdates = useCallback(() => {
     setSceneObjects(
@@ -88,7 +88,7 @@ export function Shape({ shapeProps }: { shapeProps: AllShapeProps }) {
   ]);
 
   useEffect(() => {
-    if (isPressedEsc) {
+    if (isPressed.ESC) {
       const isNotDefaultEditingState =
         editorState.editingState !== EDITING_STATES.DEFAULT;
 
@@ -98,7 +98,7 @@ export function Shape({ shapeProps }: { shapeProps: AllShapeProps }) {
       }
     }
   }, [
-    isPressedEsc,
+    isPressed.ESC,
     setEditingStateToDefault,
     cancelShapeUpdates,
     editorState.editingState,
