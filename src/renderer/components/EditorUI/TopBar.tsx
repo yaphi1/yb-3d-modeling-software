@@ -1,8 +1,8 @@
-import { useEditorStateHelpers } from '../useEditorStateHelpers';
-import { SHAPE_TYPES } from './shapes/shapeTypes';
-import { useSceneObjectUpdaters } from './useSceneObjectUpdaters';
+import { useEditorStateHelpers } from '../../useEditorStateHelpers';
+import { SHAPE_TYPES } from '../shapes/shapeTypes';
+import { useSceneObjectUpdaters } from '../useSceneObjectUpdaters';
 
-export function EditorUI() {
+export function TopBar() {
   const { addSceneObject } = useSceneObjectUpdaters();
   const {
     setViewingModeToWireframe,

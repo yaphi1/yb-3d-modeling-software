@@ -6,11 +6,10 @@ import { useEditorControls } from './controls/useEditorControls';
 import { useSceneObjectUpdaters } from './useSceneObjectUpdaters';
 import { EditorContext } from './contexts/EditorContext';
 import { useEditorStateHelpers } from '../useEditorStateHelpers';
-import { getSceneObjectById } from '../helpers';
 import { convert3DPositionTo2DCoords } from '../mathHelpers';
 
 export function SceneObjects() {
-  const { sceneObjects } = useContext(SceneObjectsContext);
+  const { sceneObjects, getActiveObject } = useContext(SceneObjectsContext);
   const { editorState, editorRefs } = useContext(EditorContext);
   const { isPressedDelete } = useEditorControls();
   const { deleteSceneObject } = useSceneObjectUpdaters();
@@ -19,10 +18,7 @@ export function SceneObjects() {
   const { camera, size } = useThree();
 
   useEffect(() => {
-    const selectedObject = getSceneObjectById({
-      id: selectedObjectId,
-      sceneObjects,
-    });
+    const selectedObject = getActiveObject();
     if (!selectedObject) {
       return;
     }
@@ -34,14 +30,7 @@ export function SceneObjects() {
     });
 
     editorRefs.objectCoordsIn2DViewport.current = coordsIn2D;
-  }, [
-    editorState.editingState,
-    editorRefs.objectCoordsIn2DViewport,
-    sceneObjects,
-    selectedObjectId,
-    camera,
-    size,
-  ]);
+  }, [editorRefs.objectCoordsIn2DViewport, getActiveObject, camera, size]);
 
   useEffect(() => {
     const shouldDelete = isPressedDelete && selectedObjectId;

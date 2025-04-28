@@ -5,7 +5,6 @@ import {
   SceneObjects,
   SceneObjectsContext,
 } from '../contexts/SceneObjectsContext';
-import { getSceneObjectById } from '../../helpers';
 import { useEditorControls } from './useEditorControls';
 import { useEditorStateHelpers } from '../../useEditorStateHelpers';
 import { getDistance2d } from '../../mathHelpers';
@@ -13,7 +12,7 @@ import { useSceneObjectUpdaters } from '../useSceneObjectUpdaters';
 
 export function useObjectScale() {
   const { editorState, editorRefs } = useContext(EditorContext);
-  const { sceneObjects, setSceneObjects } = useContext(SceneObjectsContext);
+  const { setSceneObjects, getActiveObject } = useContext(SceneObjectsContext);
   const { isPressedS } = useEditorControls();
   const { setEditingStateToScale } = useEditorStateHelpers();
   const { storeSnapshotOfObjectAndMouse } = useSceneObjectUpdaters();
@@ -27,10 +26,7 @@ export function useObjectScale() {
         isActive && isPressedS && isNotAlreadyScalingObject;
 
       if (shouldScaleObject) {
-        const sceneObject = getSceneObjectById({
-          id: editorState.selectedObjectId!,
-          sceneObjects,
-        })!;
+        const sceneObject = getActiveObject()!;
 
         storeSnapshotOfObjectAndMouse({ editorRefs, sceneObject });
         setEditingStateToScale();
@@ -40,8 +36,7 @@ export function useObjectScale() {
       isPressedS,
       editorRefs,
       editorState.editingState,
-      editorState.selectedObjectId,
-      sceneObjects,
+      getActiveObject,
       setEditingStateToScale,
       storeSnapshotOfObjectAndMouse,
     ],
@@ -68,10 +63,7 @@ export function useObjectScale() {
 
     setSceneObjects(
       produce((draft: SceneObjects) => {
-        const selectedObject = getSceneObjectById({
-          id: editorState.selectedObjectId!,
-          sceneObjects: draft,
-        })!;
+        const selectedObject = getActiveObject(draft)!;
 
         const startingScale =
           editorRefs.objectScaleSnapshot.current ?? unscaledProportions;
@@ -79,20 +71,20 @@ export function useObjectScale() {
         if (chosenAxis === AXES.DEFAULT) {
           // scale all axes
           selectedObject.scale = {
-            x: scaleFactor,
-            y: scaleFactor,
-            z: scaleFactor,
+            x: startingScale.x * scaleFactor,
+            y: startingScale.y * scaleFactor,
+            z: startingScale.z * scaleFactor,
           };
         } else {
           // scale one axis
           selectedObject.scale = {
             ...startingScale,
-            ...{ [chosenAxis]: scaleFactor },
+            ...{ [chosenAxis]: startingScale[chosenAxis] * scaleFactor },
           };
         }
       }),
     );
-  }, [editorRefs, editorState, setSceneObjects]);
+  }, [editorRefs, editorState, setSceneObjects, getActiveObject]);
 
   return {
     scaleObject,

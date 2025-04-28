@@ -18,7 +18,7 @@ import {
   SceneObjects,
   SceneObjectsContext,
 } from '../contexts/SceneObjectsContext';
-import { getSceneObjectById, xyzToArray } from '../../helpers';
+import { xyzToArray } from '../../helpers';
 import { useEditorStateHelpers } from '../../useEditorStateHelpers';
 import { useObjectMove } from '../controls/useObjectMove';
 import { useObjectScale } from '../controls/useObjectScale';
@@ -29,7 +29,7 @@ export function Shape({ shapeProps }: { shapeProps: AllShapeProps }) {
   const { listenForObjectMove } = useObjectMove();
   const { listenForObjectScale } = useObjectScale();
   const { editorState, editorRefs } = useContext(EditorContext);
-  const { setSceneObjects } = useContext(SceneObjectsContext);
+  const { setSceneObjects, getActiveObject } = useContext(SceneObjectsContext);
   const { isPressedEsc, isPressedEnter } = useEditorControls();
   const { setEditingStateToDefault } = useEditorStateHelpers();
 
@@ -63,10 +63,7 @@ export function Shape({ shapeProps }: { shapeProps: AllShapeProps }) {
   const cancelShapeUpdates = useCallback(() => {
     setSceneObjects(
       produce((draft: SceneObjects) => {
-        const selectedObject = getSceneObjectById({
-          id: editorState.selectedObjectId!,
-          sceneObjects: draft,
-        })!;
+        const selectedObject = getActiveObject(draft)!;
 
         const zeroes = { x: 0, y: 0, z: 0 };
         const ones = { x: 1, y: 1, z: 1 };
@@ -84,10 +81,10 @@ export function Shape({ shapeProps }: { shapeProps: AllShapeProps }) {
     );
   }, [
     setSceneObjects,
+    getActiveObject,
     editorRefs.objectPositionSnapshot,
     editorRefs.objectScaleSnapshot,
     editorRefs.objectRotationSnapshot,
-    editorState.selectedObjectId,
   ]);
 
   useEffect(() => {

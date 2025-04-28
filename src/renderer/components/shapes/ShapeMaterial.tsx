@@ -44,7 +44,6 @@ export function ShapeMaterial(props: CustomMeshProps) {
   );
 }
 
-
 /*
 - material customization (texture, color, metalness, roughness)
 

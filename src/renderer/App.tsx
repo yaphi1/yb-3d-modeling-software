@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import './App.css';
 import { MainView } from './components/MainView';
 import {
@@ -13,7 +13,7 @@ import {
   SceneObjectsContext,
 } from './components/contexts/SceneObjectsContext';
 import { AllShapeProps } from './components/shapes/shapeTypes';
-import { EditorUI } from './components/EditorUI';
+import { EditorUI } from './components/EditorUI/EditorUI';
 
 export default function App() {
   const [editorState, setEditorState] =
@@ -21,6 +21,21 @@ export default function App() {
 
   const [sceneObjects, setSceneObjects] =
     useState<Array<AllShapeProps>>(defaultSceneObjects);
+
+  const getActiveObject = useCallback(
+    (draftSceneObjects?: Array<AllShapeProps>) => {
+      const id = editorState.selectedObjectId;
+      if (!id) {
+        return null;
+      }
+      const objectsToCheck = draftSceneObjects ?? sceneObjects;
+      const activeObject = objectsToCheck.find(
+        (sceneObject) => id === sceneObject.id,
+      );
+      return activeObject ?? null;
+    },
+    [editorState, sceneObjects],
+  );
 
   const EditorContextValue = useMemo(() => {
     return {
@@ -31,8 +46,8 @@ export default function App() {
   }, [editorState, setEditorState]);
 
   const sceneObjectsContext = useMemo(() => {
-    return { sceneObjects, setSceneObjects };
-  }, [sceneObjects, setSceneObjects]);
+    return { sceneObjects, setSceneObjects, getActiveObject };
+  }, [sceneObjects, setSceneObjects, getActiveObject]);
 
   return (
     <EditorContext.Provider value={EditorContextValue}>

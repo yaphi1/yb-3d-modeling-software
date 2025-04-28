@@ -5,14 +5,13 @@ import {
   SceneObjects,
   SceneObjectsContext,
 } from '../contexts/SceneObjectsContext';
-import { getSceneObjectById } from '../../helpers';
 import { useEditorControls } from './useEditorControls';
 import { useEditorStateHelpers } from '../../useEditorStateHelpers';
 import { useSceneObjectUpdaters } from '../useSceneObjectUpdaters';
 
 export function useObjectMove() {
   const { editorState, editorRefs } = useContext(EditorContext);
-  const { sceneObjects, setSceneObjects } = useContext(SceneObjectsContext);
+  const { getActiveObject, setSceneObjects } = useContext(SceneObjectsContext);
   const { isPressedG } = useEditorControls();
   const { setEditingStateToMove } = useEditorStateHelpers();
   const { storeSnapshotOfObjectAndMouse } = useSceneObjectUpdaters();
@@ -26,10 +25,7 @@ export function useObjectMove() {
         isActive && isPressedG && isNotAlreadyMovingObject;
 
       if (shouldMoveObject) {
-        const sceneObject = getSceneObjectById({
-          id: editorState.selectedObjectId!,
-          sceneObjects,
-        })!;
+        const sceneObject = getActiveObject()!;
 
         storeSnapshotOfObjectAndMouse({ editorRefs, sceneObject });
         setEditingStateToMove();
@@ -39,8 +35,7 @@ export function useObjectMove() {
       isPressedG,
       editorRefs,
       editorState.editingState,
-      editorState.selectedObjectId,
-      sceneObjects,
+      getActiveObject,
       setEditingStateToMove,
       storeSnapshotOfObjectAndMouse,
     ],
@@ -60,10 +55,7 @@ export function useObjectMove() {
 
     setSceneObjects(
       produce((draft: SceneObjects) => {
-        const selectedObject = getSceneObjectById({
-          id: editorState.selectedObjectId!,
-          sceneObjects: draft,
-        })!;
+        const selectedObject = getActiveObject(draft)!;
 
         // TODO: Make direction dynamic depending on camera rotation
         const shouldReverse = editorState.chosenAxis === AXES.x;
@@ -79,7 +71,7 @@ export function useObjectMove() {
         };
       }),
     );
-  }, [editorRefs, editorState, setSceneObjects]);
+  }, [editorRefs, editorState, setSceneObjects, getActiveObject]);
 
   return {
     moveObject,

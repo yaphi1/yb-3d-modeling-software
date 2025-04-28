@@ -13,7 +13,7 @@ export function generateSceneObject(sceneObjectName: SHAPE_NAMES) {
     rotation: { x: 0, y: 0, z: 0 },
     metalness: 0.8,
     roughness: 0.1,
-    color: '#0098db',
+    color: '#848586',
   };
 }
 
@@ -24,7 +24,11 @@ export const defaultSceneObjects: SceneObjects = [
 export const SceneObjectsContext = createContext<{
   sceneObjects: SceneObjects;
   setSceneObjects: Dispatch<SetStateAction<SceneObjects>>;
+  getActiveObject: (
+    draftSceneObjects?: Array<AllShapeProps>,
+  ) => AllShapeProps | null;
 }>({
   sceneObjects: defaultSceneObjects,
   setSceneObjects: () => {},
+  getActiveObject: () => null,
 });
