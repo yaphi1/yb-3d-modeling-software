@@ -1,6 +1,7 @@
 import { useCallback, useContext } from 'react';
 import { produce } from 'immer';
 import {
+  generateDuplicateObject,
   generateSceneObject,
   SceneObjects,
   SceneObjectsContext,
@@ -16,6 +17,18 @@ export function useSceneObjectUpdaters() {
       setSceneObjects(
         produce((draft: SceneObjects) => {
           const newObject = generateSceneObject(sceneObjectType);
+          draft.push(newObject);
+        }),
+      );
+    },
+    [setSceneObjects],
+  );
+
+  const duplicateSceneObject = useCallback(
+    (sceneObject: AllShapeProps) => {
+      setSceneObjects(
+        produce((draft: SceneObjects) => {
+          const newObject = generateDuplicateObject(sceneObject);
           draft.push(newObject);
         }),
       );
@@ -54,6 +67,7 @@ export function useSceneObjectUpdaters() {
 
   return {
     addSceneObject,
+    duplicateSceneObject,
     deleteSceneObject,
     storeSnapshotOfObjectAndMouse,
   };

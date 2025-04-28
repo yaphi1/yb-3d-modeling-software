@@ -21,7 +21,7 @@ function generateSceneObjectName(sceneObjectType: SHAPE_TYPE_NAMES) {
 }
 
 export function generateSceneObject(sceneObjectType: SHAPE_TYPE_NAMES) {
-  return {
+  const sceneObject: AllShapeProps = {
     id: generateUUID(),
     sceneObjectType,
     sceneObjectName: generateSceneObjectName(sceneObjectType),
@@ -32,6 +32,20 @@ export function generateSceneObject(sceneObjectType: SHAPE_TYPE_NAMES) {
     roughness: 0.1,
     color: '#848586',
   };
+
+  return sceneObject;
+}
+
+export function generateDuplicateObject(sceneObject: AllShapeProps) {
+  const duplicatedObject: AllShapeProps = {
+    ...sceneObject,
+    id: generateUUID(),
+    sceneObjectName: generateSceneObjectName(
+      sceneObject.sceneObjectType
+    ),
+  };
+
+  return duplicatedObject;
 }
 
 export const defaultSceneObjects: SceneObjects = [
