@@ -2,6 +2,7 @@
 
 - selectable list of scene objects in sidebar
 - multiselect/multi-edit
+- allow material reuse
 - undo/redo
 - allow multiple save files
 - persist saves in filesystem instead of localStorage

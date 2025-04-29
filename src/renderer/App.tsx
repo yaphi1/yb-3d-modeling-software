@@ -16,8 +16,6 @@ import { AllShapeProps } from './components/shapes/shapeTypes';
 import { EditorUI } from './components/EditorUI/EditorUI';
 import { keyMap } from './components/controls/useEditorControls';
 
-import image from '../../assets/textures/terrain-normal.jpg';
-
 export default function App() {
   const [editorState, setEditorState] =
     useState<EditorState>(defaultEditorState);
@@ -61,9 +59,6 @@ export default function App() {
           </div>
         </KeyboardControls>
         <EditorUI />
-        <div>
-          <img src={image} alt="" />
-        </div>
       </SceneObjectsContext>
     </EditorContext.Provider>
   );
