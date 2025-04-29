@@ -23,18 +23,17 @@ export function MainView() {
 
   useEffect(() => {
     if (cameraDistance) {
-      console.log({ cameraDistance });
       editorRefs.cameraDistance.current = cameraDistance;
     }
   }, [editorRefs.cameraDistance, cameraDistance]);
 
-  const isMoving = editorState.editingState === EDITING_STATES.MOVE;
+  const isModifying = editorState.editingState !== EDITING_STATES.DEFAULT;
 
   return (
     <Canvas
       onMouseMove={onMouseMove}
       style={{
-        cursor: isMoving ? 'move' : 'auto',
+        cursor: isModifying ? 'move' : 'auto',
       }}
       onPointerMissed={() => {
         if (editorState.editingState === EDITING_STATES.DEFAULT) {

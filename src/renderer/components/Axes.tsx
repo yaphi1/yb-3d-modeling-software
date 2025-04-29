@@ -84,7 +84,8 @@ export function Axes() {
             [40, y, z],
           ]}
           color="#a16169"
-          lineWidth={3}
+          lineWidth={2}
+          depthTest={false}
         />
       )}
       {shouldShowY && (
@@ -94,7 +95,8 @@ export function Axes() {
             [x, 40, z],
           ]}
           color="#0098db"
-          lineWidth={3}
+          lineWidth={2}
+          depthTest={false}
         />
       )}
       {shouldShowZ && (
@@ -104,7 +106,8 @@ export function Axes() {
             [x, y, 40],
           ]}
           color="#87a259"
-          lineWidth={3}
+          lineWidth={2}
+          depthTest={false}
         />
       )}
       {shouldShowGizmo && (
