@@ -19,7 +19,10 @@ export function TopBar() {
         <button
           type="button"
           onClick={() => {
-            localStorage.setItem('saved_scene', JSON.stringify(sceneObjects));
+            localStorage.setItem(
+              'saved_scene',
+              JSON.stringify({ sceneObjects }),
+            );
           }}
         >
           Save
@@ -30,7 +33,8 @@ export function TopBar() {
             const storedSceneData = localStorage.getItem('saved_scene');
             if (storedSceneData) {
               const storedScene = JSON.parse(storedSceneData);
-              setSceneObjects(storedScene);
+              const storedSceneObjects = storedScene.sceneObjects;
+              setSceneObjects(storedSceneObjects);
             }
           }}
         >
