@@ -1,6 +1,8 @@
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
-import { useContext } from 'react';
+import { useContext, useEffect, useRef } from 'react';
+// @ts-expect-error - import vs require shenanigans that I don't have time to deal with
+import { OrbitControls as OrbitControlsType } from 'three/examples/jsm/Addons.js';
 import { EditorGrid } from './EditorGrid';
 import { Lighting } from './Lighting';
 import { SceneObjects } from './SceneObjects';
@@ -13,8 +15,18 @@ import { useEditorStateHelpers } from '../useEditorStateHelpers';
 export function MainView() {
   const { deselectAll } = useSelectionHelpers();
   const { onMouseMove } = useMouseMoveHandler();
-  const { editorState } = useContext(EditorContext);
+  const { editorState, editorRefs } = useContext(EditorContext);
   const { setEditingStateToDefault } = useEditorStateHelpers();
+  const cameraRef = useRef<OrbitControlsType>(null);
+
+  const cameraDistance = cameraRef.current?.getDistance();
+
+  useEffect(() => {
+    if (cameraDistance) {
+      console.log({ cameraDistance });
+      editorRefs.cameraDistance.current = cameraDistance;
+    }
+  }, [editorRefs.cameraDistance, cameraDistance]);
 
   const isMoving = editorState.editingState === EDITING_STATES.MOVE;
 
@@ -36,7 +48,7 @@ export function MainView() {
       <SceneObjects />
       <EditorGrid />
       <Axes />
-      <OrbitControls makeDefault />
+      <OrbitControls ref={cameraRef} makeDefault />
     </Canvas>
   );
 }

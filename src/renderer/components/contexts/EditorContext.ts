@@ -44,6 +44,7 @@ export type EditorRefs = {
   objectCoordsIn2DViewport: RefObject<XY | null>;
   mousePositionSnapshot: RefObject<XY | null>;
   mousePosition: RefObject<XY | null>;
+  cameraDistance: RefObject<number | null>;
 };
 
 export const defaultEditorState: EditorState = {
@@ -60,6 +61,7 @@ export const defaultEditorRefs: EditorRefs = {
   objectCoordsIn2DViewport: createRef<XY>(),
   mousePositionSnapshot: createRef<XY>(),
   mousePosition: createRef<XY>(),
+  cameraDistance: createRef<number>(),
 };
 
 export const EditorContext = createContext<{

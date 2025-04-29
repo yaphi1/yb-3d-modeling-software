@@ -63,7 +63,9 @@ export function useObjectMove() {
 
         const startingPosition = editorRefs.objectPositionSnapshot!.current!;
         const startingPositionAlongAxis = startingPosition[movementAxis];
-        const distanceToMove = direction * mouseDistance * 0.01;
+        const cameraDistance = editorRefs.cameraDistance.current ?? 5;
+        const movementSpeed = cameraDistance * 0.002;
+        const distanceToMove = direction * mouseDistance * movementSpeed;
 
         selectedObject.position = {
           ...startingPosition,
