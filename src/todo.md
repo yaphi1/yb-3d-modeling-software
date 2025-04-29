@@ -1,7 +1,8 @@
 # TODO
 
-- save/load
 - undo/redo
+- allow multiple save files
+- persist saves in filesystem instead of localStorage
 - consider adding more example textures
 - make move damping vary with camera zoom
 - refine movement to work with camera angles
